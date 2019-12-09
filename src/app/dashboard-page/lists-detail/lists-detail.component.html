@@ -1,0 +1,52 @@
+<div *ngIf="activeList === null">
+  <h3>Select or Create a List</h3>
+</div>
+
+<div *ngIf="activeList !== null">
+  <div class="d-flex flex-row">
+    <h3>{{ activeList.name }}</h3>
+    <button class="btn btn-sm"><i class="fa fa-bars"></i></button>
+  </div>
+
+  <form class="form-inline my-2 my-lg-0"
+        (ngSubmit)="addLink()">
+    <input class="form-control mr-sm-2"
+           [formControl]="urlControl"
+           type="text"
+           placeholder="URL"
+           aria-label="URL">
+    <button class="btn btn-secondary my-2"
+            [disabled]="!urlControl.valid || requestState === RequestStateEnum.LOADING"
+            [ngSwitch]="requestState"
+            type="submit">
+        <span *ngSwitchDefault>
+          <i class="fa fa-plus"></i>
+        </span>
+
+      <span *ngSwitchCase="RequestStateEnum.LOADING">
+          <i class="fa fa-gear fa-spin"></i>
+        </span>
+
+      <span *ngSwitchCase="RequestStateEnum.SUCCESS">
+          <i class="fa fa-check"></i>
+        </span>
+
+      <span *ngSwitchCase="RequestStateEnum.ERROR">
+          <i class="fa fa-exclamation"></i>
+        </span>
+    </button>
+  </form>
+
+
+  <ul class="list-group">
+    <li *ngFor="let link of activeList.links"
+        class="list-group-item">
+      <div class="d-flex w-100 justify-content-between">
+        <span class="mb-1">{{ link.title }}</span>
+        <button class="btn btn-sm"><i class="fa fa-bars"></i></button>
+      </div>
+
+      <small>{{ link.url }}</small>
+    </li>
+  </ul>
+</div>

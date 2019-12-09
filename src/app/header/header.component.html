@@ -1,0 +1,51 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand"
+       routerLink="/">
+      Linkanizer
+    </a>
+
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link"
+           routerLink="/">
+          Home
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"
+           routerLink="/about">
+          About
+        </a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0"
+          (ngSubmit)="request_login_email()">
+      <input class="form-control mr-sm-2"
+             [formControl]="emailControl"
+             type="email"
+             placeholder="Email"
+             aria-label="Email">
+      <button class="btn btn-secondary my-2 my-sm-0"
+              [disabled]="!emailControl.valid || requestState === RequestStateEnum.LOADING"
+              [ngSwitch]="requestState"
+              type="submit">
+        <span *ngSwitchDefault>
+          Login
+        </span>
+
+        <span *ngSwitchCase="RequestStateEnum.LOADING">
+          <i class="fa fa-gear fa-spin"></i>
+        </span>
+
+        <span *ngSwitchCase="RequestStateEnum.SUCCESS">
+          <i class="fa fa-check"></i>
+        </span>
+
+        <span *ngSwitchCase="RequestStateEnum.ERROR">
+          <i class="fa fa-exclamation"></i>
+        </span>
+      </button>
+    </form>
+  </div>
+</nav>

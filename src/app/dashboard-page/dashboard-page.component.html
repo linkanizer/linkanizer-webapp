@@ -1,0 +1,10 @@
+<div class="row">
+  <div class="col-4">
+    <app-lists-master [lists]="lists$ | async"
+                      (listCreated)="handleListCreated($event)"
+                      [(activeList)]="activeList"></app-lists-master>
+  </div>
+  <div class="col-8">
+    <app-lists-detail [activeList]="activeList"></app-lists-detail>
+  </div>
+</div>
