@@ -4,13 +4,20 @@
 
 <div *ngIf="activeList !== null">
   <div class="d-flex flex-row">
-    <h3>{{ activeList.name }}</h3>
-    <button class="btn btn-sm"><i class="fa fa-bars"></i></button>
+    <h3 class="mr-auto">{{ activeList.name }}</h3>
+    <div ngbDropdown class="d-inline-block">
+      <button class="btn btn-sm" id="dropdownBasic1" ngbDropdownToggle><i class="fa fa-bars"></i></button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <button ngbDropdownItem>Open All</button>
+        <button ngbDropdownItem>Delete</button>
+      </div>
+    </div>
   </div>
 
   <form class="form-inline my-2 my-lg-0"
         (ngSubmit)="addLink()">
-    <input class="form-control mr-sm-2"
+    <input id="new-link-url-field"
+           class="form-control mr-sm-2"
            [formControl]="urlControl"
            type="text"
            placeholder="URL"
