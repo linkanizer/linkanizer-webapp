@@ -15,7 +15,10 @@ export class MagicLoginPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    const token = this.route.snapshot.root.paramMap.get('token');
+    const token = this.route.snapshot.params.token;
+
+    console.log(this.route);
+    console.log(token);
 
     // TODO check if token is valid
 
@@ -24,3 +27,4 @@ export class MagicLoginPageComponent implements OnInit {
   }
 
 }
+

@@ -36,6 +36,11 @@ export class AuthService {
   public login(jwt: string): void {
     this.currentUserSubject.next({ jwt });
 
-    this.toastr.success('Login successful');
+    this.toastr.success('Login successful.');
+  }
+
+  public logout(): void {
+    this.currentUserSubject.next(null);
+    this.toastr.info('You have been logged out.');
   }
 }

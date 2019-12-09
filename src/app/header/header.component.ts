@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { FormControl, Validators } from '@angular/forms';
 import { RequestStateEnum } from '../models';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -10,7 +12,7 @@ import { RequestStateEnum } from '../models';
 })
 export class HeaderComponent implements OnInit {
 
-  public currentUser$ = this.authService.currentUser;
+  public currentUser$: Observable<boolean>;
 
   public emailControl: FormControl;
   public requestState = RequestStateEnum.DEFAULT;
@@ -18,6 +20,12 @@ export class HeaderComponent implements OnInit {
 
   constructor(private authService: AuthService) {
     this.emailControl = new FormControl('', [Validators.email, Validators.required]);
+    this.currentUser$ = authService.currentUser
+      .pipe(
+        map(
+          user => !!(user && user.jwt)
+        )
+      );
   }
 
   ngOnInit() {
@@ -36,6 +44,10 @@ export class HeaderComponent implements OnInit {
           this.requestState = RequestStateEnum.ERROR;
         }
       );
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
 }

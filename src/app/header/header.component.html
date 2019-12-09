@@ -19,33 +19,44 @@
         </a>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0"
-          (ngSubmit)="request_login_email()">
-      <input class="form-control mr-sm-2"
-             [formControl]="emailControl"
-             type="email"
-             placeholder="Email"
-             aria-label="Email">
-      <button class="btn btn-secondary my-2 my-sm-0"
-              [disabled]="!emailControl.valid || requestState === RequestStateEnum.LOADING"
-              [ngSwitch]="requestState"
-              type="submit">
-        <span *ngSwitchDefault>
-          Login
-        </span>
+    <div *ngIf="currentUser$ | async ; else login"
+         class="">
+      <a class="btn btn-secondary"
+         routerLink="/"
+         (click)="logout()">
+        Logout
+      </a>
+    </div>
+    <ng-template #login>
+      <form
+        class="form-inline my-2 my-lg-0"
+        (ngSubmit)="request_login_email()">
+        <input class="form-control mr-sm-2"
+               [formControl]="emailControl"
+               type="email"
+               placeholder="Email"
+               aria-label="Email">
+        <button class="btn btn-secondary my-2 my-sm-0"
+                [disabled]="!emailControl.valid || requestState === RequestStateEnum.LOADING"
+                [ngSwitch]="requestState"
+                type="submit">
+          <span *ngSwitchDefault>
+            Login
+          </span>
 
-        <span *ngSwitchCase="RequestStateEnum.LOADING">
-          <i class="fa fa-gear fa-spin"></i>
-        </span>
+          <span *ngSwitchCase="RequestStateEnum.LOADING">
+            <i class="fa fa-gear fa-spin"></i>
+          </span>
 
-        <span *ngSwitchCase="RequestStateEnum.SUCCESS">
-          <i class="fa fa-check"></i>
-        </span>
+          <span *ngSwitchCase="RequestStateEnum.SUCCESS">
+            <i class="fa fa-check"></i>
+          </span>
 
-        <span *ngSwitchCase="RequestStateEnum.ERROR">
-          <i class="fa fa-exclamation"></i>
-        </span>
-      </button>
-    </form>
+          <span *ngSwitchCase="RequestStateEnum.ERROR">
+            <i class="fa fa-exclamation"></i>
+          </span>
+        </button>
+      </form>
+    </ng-template>
   </div>
 </nav>
