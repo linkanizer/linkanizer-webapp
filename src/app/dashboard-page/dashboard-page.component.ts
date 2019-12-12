@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ListService } from '../services/list.service';
-import { Observable } from 'rxjs';
 import { IList } from '../models';
-import { tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -11,24 +10,29 @@ import { tap } from 'rxjs/operators';
 })
 export class DashboardPageComponent implements OnInit {
 
-  public lists$: Observable<IList[]>;
+  public lists: IList[] = [];
 
-  public activeList: IList = null;
-
-  constructor(private listService: ListService) {
+  constructor(private listService: ListService,
+              private router: Router) {
   }
 
   ngOnInit() {
-    this.lists$ = this.listService.getAll();
+    this.refreshLists();
   }
 
   handleListCreated(list: IList): void {
-    this.lists$ = this.listService.getAll();
-    this.activeList = list;
+    this.refreshLists();
+
+    this.router.navigate(['/dashboard/', list.id]);
   }
 
   handleListDelete(): void {
-    this.lists$ = this.listService.getAll();
-    this.activeList = null;
+    this.refreshLists();
+
+    this.router.navigate(['/dashboard/']);
+  }
+
+  private refreshLists(): void {
+    this.listService.getAll().subscribe(lists => this.lists = lists);
   }
 }

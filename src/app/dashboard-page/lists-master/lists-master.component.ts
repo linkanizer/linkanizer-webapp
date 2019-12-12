@@ -13,14 +13,8 @@ export class ListsMasterComponent implements OnInit {
   @Input()
   public lists: IList[];
 
-  @Input()
-  public activeList: IList;
-
   @Output()
-  public activeListChange = new EventEmitter();
-
-  @Output()
-  public listCreated = new EventEmitter();
+  public onListCreated = new EventEmitter();
 
   public nameControl = new FormControl('', Validators.required);
 
@@ -34,17 +28,13 @@ export class ListsMasterComponent implements OnInit {
 
   }
 
-  public selectList(list: IList): void {
-    this.activeListChange.emit(list);
-  }
-
   public createList(): void {
     this.requestState = RequestStateEnum.LOADING;
 
     this.listService.create(this.nameControl.value)
       .subscribe(
         success => {
-          this.listCreated.emit(success);
+          this.onListCreated.emit(success);
 
           this.nameControl.setValue('');
 

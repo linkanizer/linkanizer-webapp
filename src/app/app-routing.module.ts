@@ -20,6 +20,10 @@ const routes: Routes = [
     path: 'dashboard'
   },
   {
+    component: DashboardPageComponent,
+    path: 'dashboard/:listId'
+  },
+  {
     component: MagicLoginPageComponent,
     path: 'login/:token'
   }

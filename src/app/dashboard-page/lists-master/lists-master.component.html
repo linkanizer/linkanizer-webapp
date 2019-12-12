@@ -1,12 +1,12 @@
 <h3>Lists</h3>
 
 <div class="list-group list-group-flush">
-  <button *ngFor="let list of lists"
-          class="list-group-item list-group-item-action"
-          [class.active]="list.id === activeList?.id"
-          (click)="selectList(list)">
+  <a *ngFor="let list of lists"
+     class="list-group-item list-group-item-action"
+     routerLinkActive="active"
+     [routerLink]="['/dashboard/', list.id]">
     {{ list.name }}
-  </button>
+  </a>
 </div>
 
 <form class="form-inline my-2 my-lg-0"

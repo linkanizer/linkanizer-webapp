@@ -4,6 +4,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { LinkService } from '../../services/link.service';
 import { Observable } from 'rxjs';
 import { ListService } from '../../services/list.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-lists-detail',
@@ -13,13 +14,7 @@ import { ListService } from '../../services/list.service';
 export class ListsDetailComponent implements OnInit {
 
   @Input()
-  public set activeList(list: IList) {
-    if (list !== null) {
-      this.links$ = this.linkService.getAll(list);
-    }
-
-    this.list = list;
-  }
+  public lists: IList[];
 
   @Output()
   public onListDelete = new EventEmitter();
@@ -34,10 +29,21 @@ export class ListsDetailComponent implements OnInit {
   public links$: Observable<ILink[]>;
 
   constructor(private linkService: LinkService,
-              private listService: ListService) {
+              private listService: ListService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
+    this.route.paramMap
+      .subscribe(
+        paramMap => {
+          this.list = this.lists.find(candidate => candidate.id === +paramMap.get('listId')) || null;
+
+          if (this.list !== null) {
+            this.links$ = this.linkService.getAll(this.list);
+          }
+        }
+      );
   }
 
   addLink(): void {
@@ -76,7 +82,7 @@ export class ListsDetailComponent implements OnInit {
         success => {
           this.onListDelete.emit();
         }
-      )
+      );
   }
 
 }
