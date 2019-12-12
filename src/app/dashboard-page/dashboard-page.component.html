@@ -5,6 +5,7 @@
                       [(activeList)]="activeList"></app-lists-master>
   </div>
   <div class="col-8">
-    <app-lists-detail [activeList]="activeList"></app-lists-detail>
+    <app-lists-detail [activeList]="activeList"
+                      (onListDelete)="handleListDelete()"></app-lists-detail>
   </div>
 </div>

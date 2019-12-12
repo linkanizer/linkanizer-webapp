@@ -15,7 +15,8 @@ export class DashboardPageComponent implements OnInit {
 
   public activeList: IList = null;
 
-  constructor(private listService: ListService) { }
+  constructor(private listService: ListService) {
+  }
 
   ngOnInit() {
     this.lists$ = this.listService.getAll();
@@ -24,5 +25,10 @@ export class DashboardPageComponent implements OnInit {
   handleListCreated(list: IList): void {
     this.lists$ = this.listService.getAll();
     this.activeList = list;
+  }
+
+  handleListDelete(): void {
+    this.lists$ = this.listService.getAll();
+    this.activeList = null;
   }
 }

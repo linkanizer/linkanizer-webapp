@@ -12,7 +12,7 @@ import { map } from 'rxjs/operators';
 })
 export class HeaderComponent implements OnInit {
 
-  public currentUser$: Observable<boolean>;
+  public loggedIn$: Observable<boolean>;
 
   public emailControl: FormControl;
   public requestState = RequestStateEnum.DEFAULT;
@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(private authService: AuthService) {
     this.emailControl = new FormControl('', [Validators.email, Validators.required]);
-    this.currentUser$ = authService.currentUser
+    this.loggedIn$ = authService.currentUser
       .pipe(
         map(
           user => !!(user && user.jwt)

@@ -12,6 +12,13 @@
           Home
         </a>
       </li>
+      <li *ngIf="loggedIn$ | async"
+          class="nav-item">
+        <a class="nav-link"
+           routerLink="/dashboard/">
+          Dashboard
+        </a>
+      </li>
       <li class="nav-item">
         <a class="nav-link"
            routerLink="/about">
@@ -19,14 +26,16 @@
         </a>
       </li>
     </ul>
-    <div *ngIf="currentUser$ | async ; else login"
-         class="">
-      <a class="btn btn-secondary"
-         routerLink="/"
-         (click)="logout()">
-        Logout
-      </a>
-    </div>
+    <ul *ngIf="loggedIn$ | async ; else login"
+        class="navbar-nav">
+      <li>
+        <a class="btn btn-secondary"
+           routerLink="/"
+           (click)="logout()">
+          Logout
+        </a>
+      </li>
+    </ul>
     <ng-template #login>
       <form
         class="form-inline my-2 my-lg-0"

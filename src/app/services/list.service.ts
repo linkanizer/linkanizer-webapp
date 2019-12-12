@@ -2,18 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { IList } from '../models';
 
-const LISTS: IList[] = [
-  {
-    id: 1,
-    name: 'Astronomy',
-    links: []
-  },
-  {
-    id: 2,
-    name: 'Physics',
-    links: []
-  }
-];
+let LISTS: IList[] = [];
 
 @Injectable({
   providedIn: 'root'
@@ -30,12 +19,17 @@ export class ListService {
   public create(name: string): Observable<IList> {
     const list: IList = {
       id: Date.now(),
-      name,
-      links: []
+      name
     };
 
     LISTS.push(list);
 
     return of(list);
+  }
+
+  public delete(list: IList): Observable<null> {
+    LISTS = LISTS.filter(candidate => candidate.id !== list.id);
+
+    return of(null);
   }
 }
