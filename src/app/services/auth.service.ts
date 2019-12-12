@@ -23,6 +23,10 @@ export class AuthService {
     );
   }
 
+  public get currentUserValue(): IUser {
+    return this.currentUserSubject.value;
+  }
+
   public request_login_email(email: string): Observable<void> {
     return this.http.post(`${environment.api}/auth/login`, { email })
       .pipe(
