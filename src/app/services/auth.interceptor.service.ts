@@ -21,12 +21,16 @@ export class AuthInterceptorService implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const user = this.authService.currentUserValue;
 
+    const whitelist = ['/auth/request-login-email'];
+
     if (request.url.includes(environment.api)) {
-      request = request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${user.jwt}`
-        }
-      });
+      if (whitelist.every(white => !request.url.includes(white))) {
+        request = request.clone({
+          setHeaders: {
+            Authorization: `Bearer ${user.jwt}`
+          }
+        });
+      }
     }
 
     return next.handle(request);

@@ -1,35 +1,36 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { IList } from '../models';
-
-let LISTS: IList[] = [];
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ListService {
 
-  constructor() {
+  constructor(private http: HttpClient) {
   }
 
   public getAll(): Observable<IList[]> {
-    return of(LISTS);
+    return this.http.get<IList[]>(`${environment.api}/lists/`);
   }
 
   public create(name: string): Observable<IList> {
-    const list: IList = {
-      id: Date.now(),
+    const list: Partial<IList> = {
       name
     };
 
-    LISTS.push(list);
-
-    return of(list);
+    return this.http.post<IList>(`${environment.api}/lists/`, list);
   }
 
   public delete(list: IList): Observable<null> {
-    LISTS = LISTS.filter(candidate => candidate.id !== list.id);
-
-    return of(null);
+    return this.http.delete(`${environment.api}/lists/${list.id}/`)
+      .pipe(
+        map(
+          () => null
+        )
+      );
   }
 }

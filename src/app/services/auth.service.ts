@@ -4,7 +4,7 @@ import { IUser } from '../models';
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../environments/environment';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +28,13 @@ export class AuthService {
   }
 
   public request_login_email(email: string): Observable<void> {
-    return this.http.post(`${environment.api}/auth/login`, { email })
+    return this.http.post(`${environment.api}/auth/request-login-email`, { email })
       .pipe(
+        tap(
+          () => {
+            this.toastr.success('Login email sent.');
+          }
+        ),
         map(
           () => {
           }
