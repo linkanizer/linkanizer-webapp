@@ -1,41 +1,48 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ILink, IList } from '../models';
-
-const LINKS: { [key: string]: ILink[] } = {};
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LinkService {
 
-  constructor() {
+  constructor(private http: HttpClient) {
   }
 
   public create(list: IList, url: string): Observable<null> {
-    if (!Array.isArray(LINKS[list.id])) {
-      LINKS[list.id] = [];
-    }
-
-    LINKS[list.id].push({
+    const link: Partial<ILink> & { list: string } = {
       title: url,
       url,
-      id: Date.now()
-    });
+      list: list.id
+    };
 
-    return of(null);
+    return this.http.post<ILink>(`${environment.api}/links/`, link)
+      .pipe(
+        map(
+          () => null
+        )
+      );
   }
 
   public getAll(list: IList): Observable<ILink[]> {
-    return of(LINKS[list.id] || []);
+    const params = {
+      list: list.id
+    };
+
+    return this.http.get<ILink[]>(`${environment.api}/links/`, { params });
   }
 
   public delete(link: ILink): Observable<null> {
-    for (const key of Object.keys(LINKS)) {
-      LINKS[key] = LINKS[key].filter(candidate => candidate.id !== link.id);
-    }
-
-    return of(null);
+    return this.http.delete(`${environment.api}/links/${link.id}/`)
+      .pipe(
+        map(
+          () => null
+        )
+      );
   }
 
 }

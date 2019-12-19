@@ -37,7 +37,7 @@ export class ListsDetailComponent implements OnInit {
     this.route.paramMap
       .subscribe(
         paramMap => {
-          this.list = this.lists.find(candidate => candidate.id === +paramMap.get('listId')) || null;
+          this.list = this.lists.find(candidate => candidate.id === paramMap.get('listId')) || null;
 
           if (this.list !== null) {
             this.links$ = this.linkService.getAll(this.list);
