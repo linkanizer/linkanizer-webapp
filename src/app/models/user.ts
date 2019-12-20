@@ -1,3 +1,7 @@
+export interface ICredentials {
+  email: string;
+}
+
 export interface IUser {
-  readonly jwt: string;
+  jwt: string;
 }

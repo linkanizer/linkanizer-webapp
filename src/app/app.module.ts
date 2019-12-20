@@ -6,7 +6,16 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { storageSyncMetaReducer } from 'ngrx-store-persist';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffects } from './app.effects';
+
 import { AppRoutingModule } from './app-routing.module';
+
+import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -39,6 +48,15 @@ import { ErrorInterceptorService } from './services/error.interceptor.service';
       timeOut: 2500,
       positionClass: 'toast-top-center'
     }),
+    StoreModule.forRoot(reducers, {
+      metaReducers: [...metaReducers, storageSyncMetaReducer],
+      runtimeChecks: {
+        strictStateImmutability: true,
+        strictActionImmutability: true
+      }
+    }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    EffectsModule.forRoot([AuthEffects]),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },

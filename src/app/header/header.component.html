@@ -47,23 +47,15 @@
                placeholder="Email"
                aria-label="Email">
         <button class="btn btn-secondary my-2 my-sm-0"
-                [disabled]="!emailControl.valid || requestState === RequestStateEnum.LOADING"
-                [ngSwitch]="requestState"
+                [disabled]="!emailControl.valid || (authLoading$ | async)"
                 type="submit">
-          <span *ngSwitchDefault>
+
+          <span *ngIf="!(authLoading$ | async)">
             Login
           </span>
 
-          <span *ngSwitchCase="RequestStateEnum.LOADING">
+          <span *ngIf="authLoading$ | async">
             <i class="fa fa-gear fa-spin"></i>
-          </span>
-
-          <span *ngSwitchCase="RequestStateEnum.SUCCESS">
-            <i class="fa fa-check"></i>
-          </span>
-
-          <span *ngSwitchCase="RequestStateEnum.ERROR">
-            <i class="fa fa-exclamation"></i>
           </span>
         </button>
       </form>

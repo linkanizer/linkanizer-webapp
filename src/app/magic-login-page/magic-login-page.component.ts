@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { Store } from '@ngrx/store';
+import { State } from '../reducers';
+
+import * as AuthActions from '../actions/auth.actions';
 
 @Component({
   selector: 'app-magic-login-page',
@@ -9,21 +12,18 @@ import { AuthService } from '../services/auth.service';
 })
 export class MagicLoginPageComponent implements OnInit {
 
-  constructor(private authService: AuthService,
+  constructor(private store: Store<State>,
               private router: Router,
               private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    const token = this.route.snapshot.params.token;
-
-    console.log(this.route);
-    console.log(token);
+    const jwt = this.route.snapshot.params.token;
 
     // TODO check if token is valid
+    this.store.dispatch(AuthActions.login({ user: { jwt } }));
 
-    this.authService.login(token);
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/dashboard/']);
   }
 
 }
