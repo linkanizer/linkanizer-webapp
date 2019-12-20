@@ -1,10 +1,10 @@
-<ng-template #empty>
+<ng-template #loadingList>
   <div>
-    <h3>Select or Create a List</h3>
+    <h3>Loading...</h3>
   </div>
 </ng-template>
 
-<div *ngIf="list !== null; else empty">
+<div *ngIf="list !== null; else loadingList">
   <div class="d-flex flex-row">
     <h3 class="mr-auto">{{ list.name }}</h3>
     <div ngbDropdown class="d-inline-block">

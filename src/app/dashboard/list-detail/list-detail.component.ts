@@ -1,47 +1,47 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ILink, IList, RequestStateEnum } from '../../models';
 import { FormControl, Validators } from '@angular/forms';
-import { LinkService } from '../../services/link.service';
 import { Observable } from 'rxjs';
+import { LinkService } from '../../services/link.service';
 import { ListService } from '../../services/list.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-lists-detail',
-  templateUrl: './lists-detail.component.html',
-  styleUrls: ['./lists-detail.component.css']
+  selector: 'app-list-detail',
+  templateUrl: './list-detail.component.html',
+  styleUrls: ['./list-detail.component.css']
 })
-export class ListsDetailComponent implements OnInit {
-
-  @Input()
-  public lists: IList[];
-
-  @Output()
-  public onListDelete = new EventEmitter();
+export class ListDetailComponent implements OnInit {
 
   public list: IList = null;
+  public links$: Observable<ILink[]> = null;
 
   public urlControl = new FormControl('', [Validators.required]);
 
   public requestState = RequestStateEnum.DEFAULT;
   public RequestStateEnum = RequestStateEnum;
 
-  public links$: Observable<ILink[]>;
-
   constructor(private linkService: LinkService,
               private listService: ListService,
+              private router: Router,
               private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     this.route.paramMap
-      .subscribe(
-        paramMap => {
-          this.list = this.lists.find(candidate => candidate.id === paramMap.get('listId')) || null;
-
-          if (this.list !== null) {
-            this.links$ = this.linkService.getAll(this.list);
+      .pipe(
+        switchMap(
+          paramMap => {
+            const listId = paramMap.get('listId');
+            return this.listService.get(listId);
           }
+        )
+      )
+      .subscribe(
+        list => {
+          this.list = list;
+          this.links$ = this.linkService.getAll(list);
         }
       );
   }
@@ -80,7 +80,8 @@ export class ListsDetailComponent implements OnInit {
     this.listService.delete(this.list)
       .subscribe(
         success => {
-          this.onListDelete.emit();
+          // TODO event or store sync
+          this.router.navigate(['/dashboard/']);
         }
       );
   }

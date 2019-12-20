@@ -12,11 +12,8 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { IndexPageComponent } from './index-page/index-page.component';
-import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
 import { AboutPageComponent } from './about-page/about-page.component';
 import { MagicLoginPageComponent } from './magic-login-page/magic-login-page.component';
-import { ListsMasterComponent } from './dashboard-page/lists-master/lists-master.component';
-import { ListsDetailComponent } from './dashboard-page/lists-detail/lists-detail.component';
 
 import { AuthInterceptorService } from './services/auth.interceptor.service';
 import { ErrorInterceptorService } from './services/error.interceptor.service';
@@ -27,11 +24,8 @@ import { ErrorInterceptorService } from './services/error.interceptor.service';
     HeaderComponent,
     FooterComponent,
     IndexPageComponent,
-    DashboardPageComponent,
     AboutPageComponent,
     MagicLoginPageComponent,
-    ListsMasterComponent,
-    ListsDetailComponent
   ],
   imports: [
     BrowserModule,

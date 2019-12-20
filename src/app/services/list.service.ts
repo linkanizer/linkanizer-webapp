@@ -17,6 +17,10 @@ export class ListService {
     return this.http.get<IList[]>(`${environment.api}/lists/`);
   }
 
+  public get(id: string): Observable<IList> {
+    return this.http.get<IList>(`${environment.api}/lists/${id}/`);
+  }
+
   public create(name: string): Observable<IList> {
     const list: Partial<IList> = {
       name

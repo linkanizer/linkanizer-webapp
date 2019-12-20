@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth-guard.service';
 
 import { IndexPageComponent } from './index-page/index-page.component';
-import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
 import { AboutPageComponent } from './about-page/about-page.component';
 import { MagicLoginPageComponent } from './magic-login-page/magic-login-page.component';
 
@@ -18,18 +17,16 @@ const routes: Routes = [
     path: 'about'
   },
   {
-    component: DashboardPageComponent,
+    path: 'dashboard',
     canActivate: [AuthGuard],
-    path: 'dashboard'
-  },
-  {
-    component: DashboardPageComponent,
-    canActivate: [AuthGuard],
-    path: 'dashboard/:listId'
+    loadChildren: './dashboard/dashboard.module#DashboardModule'
   },
   {
     component: MagicLoginPageComponent,
     path: 'login/:token'
+  },
+  {
+    path: '**', redirectTo: ''
   }
 ];
 

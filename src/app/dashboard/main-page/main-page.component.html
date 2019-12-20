@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-4">
+    <h3>Lists</h3>
+
+    <div class="list-group list-group-flush">
+      <a *ngFor="let list of lists"
+         class="list-group-item list-group-item-action"
+         routerLinkActive="active"
+         [routerLink]="['/dashboard/list/', list.id]">
+        {{ list.name }}
+      </a>
+    </div>
+
+    <form class="form-inline my-2 my-lg-0"
+          (ngSubmit)="createList()">
+      <input id="new-list-field"
+             class="form-control mr-sm-2"
+             [formControl]="nameControl"
+             type="text"
+             placeholder="New list..."
+             aria-label="New list">
+      <button class="btn btn-secondary my-2"
+              [disabled]="!nameControl.valid || requestState === RequestStateEnum.LOADING"
+              [ngSwitch]="requestState"
+              type="submit">
+        <span *ngSwitchDefault>
+          <i class="fa fa-plus"></i>
+        </span>
+
+        <span *ngSwitchCase="RequestStateEnum.LOADING">
+          <i class="fa fa-gear fa-spin"></i>
+        </span>
+
+        <span *ngSwitchCase="RequestStateEnum.SUCCESS">
+          <i class="fa fa-check"></i>
+        </span>
+
+        <span *ngSwitchCase="RequestStateEnum.ERROR">
+          <i class="fa fa-exclamation"></i>
+        </span>
+      </button>
+    </form>
+
+  </div>
+  <div class="col-8">
+    <router-outlet></router-outlet>
+  </div>
+</div>
