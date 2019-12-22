@@ -29,12 +29,8 @@ export class ListService {
     return this.http.post<IList>(`${environment.api}/lists/`, list);
   }
 
-  public delete(list: IList): Observable<null> {
-    return this.http.delete(`${environment.api}/lists/${list.id}/`)
-      .pipe(
-        map(
-          () => null
-        )
-      );
+  public delete(list: IList): Observable<IList> {
+    // TODO check API return for delete endpoint
+    return this.http.delete<IList>(`${environment.api}/lists/${list.id}/`);
   }
 }

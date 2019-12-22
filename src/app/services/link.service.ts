@@ -13,19 +13,14 @@ export class LinkService {
   constructor(private http: HttpClient) {
   }
 
-  public create(list: IList, url: string): Observable<null> {
+  public create(list: IList, url: string): Observable<ILink> {
     const link: Partial<ILink> & { list: string } = {
       title: url,
       url,
       list: list.id
     };
 
-    return this.http.post<ILink>(`${environment.api}/links/`, link)
-      .pipe(
-        map(
-          () => null
-        )
-      );
+    return this.http.post<ILink>(`${environment.api}/links/`, link);
   }
 
   public getAll(list: IList): Observable<ILink[]> {

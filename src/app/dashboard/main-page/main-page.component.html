@@ -3,7 +3,7 @@
     <h3>Lists</h3>
 
     <div class="list-group list-group-flush">
-      <a *ngFor="let list of lists"
+      <a *ngFor="let list of lists$ | async"
          class="list-group-item list-group-item-action"
          routerLinkActive="active"
          [routerLink]="['/dashboard/list/', list.id]">
@@ -20,23 +20,14 @@
              placeholder="New list..."
              aria-label="New list">
       <button class="btn btn-secondary my-2"
-              [disabled]="!nameControl.valid || requestState === RequestStateEnum.LOADING"
-              [ngSwitch]="requestState"
+              [disabled]="!nameControl.valid || (listsCreateLoading$ | async)"
               type="submit">
-        <span *ngSwitchDefault>
+        <span *ngIf="!(listsCreateLoading$ | async)">
           <i class="fa fa-plus"></i>
         </span>
 
-        <span *ngSwitchCase="RequestStateEnum.LOADING">
+        <span *ngIf="listsCreateLoading$ | async">
           <i class="fa fa-gear fa-spin"></i>
-        </span>
-
-        <span *ngSwitchCase="RequestStateEnum.SUCCESS">
-          <i class="fa fa-check"></i>
-        </span>
-
-        <span *ngSwitchCase="RequestStateEnum.ERROR">
-          <i class="fa fa-exclamation"></i>
         </span>
       </button>
     </form>

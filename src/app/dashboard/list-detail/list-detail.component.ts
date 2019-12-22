@@ -6,6 +6,9 @@ import { LinkService } from '../../services/link.service';
 import { ListService } from '../../services/list.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
+import { State } from '../../reducers';
+import { Store } from '@ngrx/store';
+import { selectListById } from '../../selectors/list.selectors';
 
 @Component({
   selector: 'app-list-detail',
@@ -19,21 +22,21 @@ export class ListDetailComponent implements OnInit {
 
   public urlControl = new FormControl('', [Validators.required]);
 
-  public requestState = RequestStateEnum.DEFAULT;
-  public RequestStateEnum = RequestStateEnum;
-
   constructor(private linkService: LinkService,
               private listService: ListService,
+              private store: Store<State>,
               private router: Router,
               private route: ActivatedRoute) {
   }
 
   ngOnInit() {
+    // this.links$ = this.store.select(selectLinks)
     this.route.paramMap
       .pipe(
         switchMap(
           paramMap => {
             const listId = paramMap.get('listId');
+            return this.store.select(selectListById);
             return this.listService.get(listId);
           }
         )
@@ -47,19 +50,16 @@ export class ListDetailComponent implements OnInit {
   }
 
   addLink(): void {
-    this.requestState = RequestStateEnum.LOADING;
 
     this.linkService.create(this.list, this.urlControl.value)
       .subscribe(
         success => {
           this.urlControl.setValue('');
 
-          this.requestState = RequestStateEnum.SUCCESS;
 
           this.links$ = this.linkService.getAll(this.list);
         },
         error => {
-          this.requestState = RequestStateEnum.ERROR;
         }
       );
   }

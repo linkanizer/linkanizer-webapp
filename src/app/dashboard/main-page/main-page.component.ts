@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { IList, RequestStateEnum } from '../../models';
+import { IList } from '../../models';
 import { FormControl, Validators } from '@angular/forms';
-import { ListService } from '../../services/list.service';
 import { Router } from '@angular/router';
+import { State } from '../../reducers';
+import { Store } from '@ngrx/store';
+import { selectListsAll, selectListsCreateLoading, selectListsRetrieveLoading } from '../../selectors/list.selectors';
+import { Observable } from 'rxjs';
+
+import * as ListActions from '../../actions/list.actions';
 
 @Component({
   selector: 'app-main-page',
@@ -11,42 +16,24 @@ import { Router } from '@angular/router';
 })
 export class MainPageComponent implements OnInit {
 
-  public lists: IList[] = [];
+  public lists$: Observable<IList[]> = this.store.select(selectListsAll);
+  public listsLoading$: Observable<boolean> = this.store.select(selectListsRetrieveLoading);
+  public listsCreateLoading$: Observable<boolean> = this.store.select(selectListsCreateLoading);
 
   public nameControl = new FormControl('', Validators.required);
 
-  public requestState = RequestStateEnum.DEFAULT;
-  public RequestStateEnum = RequestStateEnum;
-
-  constructor(private listService: ListService,
+  constructor(private store: Store<State>,
               private router: Router) {
   }
 
   ngOnInit() {
-    this.refreshLists();
+    this.store.dispatch(ListActions.getAllLists());
   }
 
   public createList(): void {
-    this.requestState = RequestStateEnum.LOADING;
+    this.store.dispatch(ListActions.createList({ list: { name: this.nameControl.value } }));
 
-    this.listService.create(this.nameControl.value)
-      .subscribe(
-        list => {
-          this.nameControl.setValue('');
-
-          this.requestState = RequestStateEnum.SUCCESS;
-
-          this.refreshLists();
-
-          this.router.navigate(['/dashboard/list/', list.id]);
-        },
-        error => {
-          this.requestState = RequestStateEnum.ERROR;
-        }
-      );
-  }
-
-  private refreshLists(): void {
-    this.listService.getAll().subscribe(lists => this.lists = lists);
+    // TODO
+    // this.router.navigate(['/dashboard/list/', list.id]);
   }
 }
