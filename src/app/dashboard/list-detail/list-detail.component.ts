@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { ILink, IList, RequestStateEnum } from '../../models';
+import { ILink, IList } from '../../models';
 import { FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { LinkService } from '../../services/link.service';
-import { ListService } from '../../services/list.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { State } from '../../reducers';
 import { Store } from '@ngrx/store';
 import { selectListById } from '../../selectors/list.selectors';
+
+import * as LinkActions from '../../actions/link.actions';
+import * as ListActions from '../../actions/list.actions';
+import { selectLinks, selectLinksAll, selectLinksCreateLoading, selectLinksRetrieveLoading } from '../../selectors/link.selectors';
 
 @Component({
   selector: 'app-list-detail',
@@ -18,72 +20,57 @@ import { selectListById } from '../../selectors/list.selectors';
 export class ListDetailComponent implements OnInit {
 
   public list: IList = null;
-  public links$: Observable<ILink[]> = null;
+  public links$: Observable<ILink[]> = this.store.select(selectLinksAll);
+  public linkCreateLoading$: Observable<boolean> = this.store.select(selectLinksCreateLoading);
+  public linkRetrieveLoading$: Observable<boolean> = this.store.select(selectLinksRetrieveLoading);
 
   public urlControl = new FormControl('', [Validators.required]);
 
-  constructor(private linkService: LinkService,
-              private listService: ListService,
-              private store: Store<State>,
+  constructor(private store: Store<State>,
               private router: Router,
               private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    // this.links$ = this.store.select(selectLinks)
     this.route.paramMap
       .pipe(
         switchMap(
           paramMap => {
             const listId = paramMap.get('listId');
-            return this.store.select(selectListById);
-            return this.listService.get(listId);
+            return this.store.select(selectListById, { id: listId });
           }
         )
       )
       .subscribe(
         list => {
           this.list = list;
-          this.links$ = this.linkService.getAll(list);
+          this.store.dispatch(LinkActions.getAllLinks({ list }));
         }
       );
   }
 
   addLink(): void {
+    const link: Partial<ILink> = {
+      url: this.urlControl.value
+    };
 
-    this.linkService.create(this.list, this.urlControl.value)
-      .subscribe(
-        success => {
-          this.urlControl.setValue('');
+    this.store.dispatch(LinkActions.createLink({ list: this.list, link }));
 
-
-          this.links$ = this.linkService.getAll(this.list);
-        },
-        error => {
-        }
-      );
+    // TODO how to clear urlControl value after submission complete?
+    // TODO update links store on update?
+    // this.urlControl.setValue('');
+    //           this.links$ = this.linkService.getAll(this.list);
   }
 
   deleteLink(link: ILink): void {
-    this.linkService.delete(link)
-      .subscribe(
-        success => {
-          this.links$ = this.linkService.getAll(this.list);
-        },
-        error => {
-
-        }
-      );
+    this.store.dispatch(LinkActions.deleteLink({ link }));
   }
 
   deleteList(): void {
-    this.listService.delete(this.list)
-      .subscribe(
-        success => {
-          // TODO event or store sync
-          this.router.navigate(['/dashboard/']);
-        }
-      );
+    this.store.dispatch(ListActions.deleteList({list: this.list}));
+
+    // TODO event or store sync
+    // this.router.navigate(['/dashboard/']);
   }
 
 }

@@ -4,7 +4,7 @@ import * as ListActions from '../actions/list.actions';
 import { IList } from '../models';
 
 export interface ListState {
-  lists: Map<string, IList>;
+  lists: { [key: string]: IList };
   listIds: string[];
   loading: {
     retrieve: boolean;
@@ -22,7 +22,7 @@ const emptyLoadingState = {
 
 const initialState: ListState = {
   listIds: [],
-  lists: new Map(),
+  lists: {},
   loading: emptyLoadingState,
   error: null
 };
@@ -31,7 +31,7 @@ const listReducer = createReducer(
   initialState,
   on(ListActions.getAllLists, state => ({
     listIds: [],
-    lists: new Map(),
+    lists: {},
     loading: {
       ...emptyLoadingState,
       retrieve: true
@@ -40,15 +40,33 @@ const listReducer = createReducer(
   })),
   on(ListActions.getAllListsFailure, (state, { error }) => ({
     listIds: [],
-    lists: new Map(),
+    lists: {},
     loading: emptyLoadingState,
     error
   })),
   on(ListActions.getAllListsSuccess, (state, { lists }) => ({
     listIds: lists.map(list => list.id),
-    lists: new Map(lists.map(list => [list.id, list])),
+    lists: lists.reduce((acc, next) => Object.assign(acc, { [next.id]: next }), {}),
     loading: emptyLoadingState,
     error: null
+  })),
+  on(ListActions.createList, (state, props) => ({
+    ...state,
+    loading: {
+      ...emptyLoadingState,
+      create: true
+    }
+  })),
+  on(ListActions.createListSuccess, (state, { list }) => ({
+    listIds: [...state.listIds, list.id],
+    lists: { ...state.lists, [list.id]: list },
+    loading: emptyLoadingState,
+    error: null
+  })),
+  on(ListActions.createListFailure, (state, { error }) => ({
+    ...state,
+    loading: emptyLoadingState,
+    error
   }))
 );
 

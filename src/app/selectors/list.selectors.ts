@@ -6,7 +6,7 @@ export const selectLists = (state: State) => state.lists;
 
 export const selectListsAll = createSelector(
   selectLists,
-  (state: ListState) => Array.from(state.lists.values())
+  (state: ListState) => Array.from(Object.values(state.lists))
 );
 
 export const selectListsRetrieveLoading = createSelector(
@@ -26,5 +26,5 @@ export const selectListsDeleteLoading = createSelector(
 
 export const selectListById = createSelector(
   selectLists,
-  (state: ListState, id: string) => state.lists.get(id)
+  (state: ListState, { id }: { id: string }) => state.lists[id]
 );
