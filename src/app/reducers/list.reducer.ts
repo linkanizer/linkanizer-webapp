@@ -67,7 +67,27 @@ const listReducer = createReducer(
     ...state,
     loading: emptyLoadingState,
     error
-  }))
+  })),
+  on(ListActions.deleteList, (state, props) => ({
+    ...state,
+    loading: {
+      ...emptyLoadingState,
+      delete: true
+    }
+  })),
+  on(ListActions.deleteListSuccess, (state, { list }) => ({
+    listIds: state.listIds.filter(candidate => candidate !== list.id),
+    lists: Object.keys(state.lists).reduce( (acc, next) => {
+      Object.assign(acc, {[list.id]})
+    }),
+    loading: emptyLoadingState,
+    error: null
+  })),
+  on(ListActions.deleteListFailure, (state, { error }) => ({
+    ...state,
+    loading: emptyLoadingState,
+    error
+  })),
 );
 
 export function reducer(state: ListState | undefined, action: Action): ListState {

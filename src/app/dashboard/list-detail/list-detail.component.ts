@@ -3,7 +3,7 @@ import { ILink, IList } from '../../models';
 import { FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { filter, switchMap } from 'rxjs/operators';
 import { State } from '../../reducers';
 import { Store } from '@ngrx/store';
 import { selectListById } from '../../selectors/list.selectors';
@@ -39,6 +39,9 @@ export class ListDetailComponent implements OnInit {
             const listId = paramMap.get('listId');
             return this.store.select(selectListById, { id: listId });
           }
+        ),
+        filter(
+          list => !!list
         )
       )
       .subscribe(
