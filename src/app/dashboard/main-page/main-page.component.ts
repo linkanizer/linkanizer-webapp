@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { IList } from '../../models';
 import { FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { State } from '../../reducers';
-import { Store } from '@ngrx/store';
+import { ActionsSubject, Store } from '@ngrx/store';
 import { selectListsAll, selectListsCreateLoading, selectListsRetrieveLoading } from '../../selectors/list.selectors';
 import { Observable } from 'rxjs';
+import { ofType } from '@ngrx/effects';
 
 import * as ListActions from '../../actions/list.actions';
 
@@ -23,17 +23,24 @@ export class MainPageComponent implements OnInit {
   public nameControl = new FormControl('', Validators.required);
 
   constructor(private store: Store<State>,
-              private router: Router) {
+              private dispatcher: ActionsSubject) {
   }
 
   ngOnInit() {
     this.store.dispatch(ListActions.getAllLists());
+
+    this.dispatcher
+      .pipe(
+        ofType(ListActions.createListSuccess)
+      )
+      .subscribe(
+        () => {
+          this.nameControl.reset();
+        }
+      );
   }
 
   public createList(): void {
     this.store.dispatch(ListActions.createList({ list: { name: this.nameControl.value } }));
-
-    // TODO
-    // this.router.navigate(['/dashboard/list/', list.id]);
   }
 }

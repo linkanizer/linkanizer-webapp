@@ -77,9 +77,14 @@ const listReducer = createReducer(
   })),
   on(ListActions.deleteListSuccess, (state, { list }) => ({
     listIds: state.listIds.filter(candidate => candidate !== list.id),
-    lists: Object.keys(state.lists).reduce( (acc, next) => {
-      Object.assign(acc, {[list.id]})
-    }),
+    lists: state.listIds
+      .filter(candidate => candidate !== list.id)
+      .reduce((acc, next) => ({
+          ...acc,
+          [next]: state.lists[next]
+        }),
+        {}
+      ),
     loading: emptyLoadingState,
     error: null
   })),

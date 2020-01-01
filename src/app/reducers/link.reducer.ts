@@ -50,7 +50,50 @@ const listReducer = createReducer(
     links: links.reduce((acc, next) => Object.assign(acc, { [next.id]: next }), {}),
     loading: emptyLoadingState,
     error: null
-  }))
+  })),
+  on(LinkActions.createLink, state => ({
+    ...state,
+    loading: {
+      ...emptyLoadingState,
+      create: true
+    }
+  })),
+  on(LinkActions.createLinkSuccess, (state, { link }) => ({
+    linkIds: [...state.linkIds, link.id],
+    links: { ...state.links, [link.id]: link },
+    loading: emptyLoadingState,
+    error: null
+  })),
+  on(LinkActions.createLinkFailure, (state, { error }) => ({
+    ...state,
+    loading: emptyLoadingState,
+    error
+  })),
+  on(LinkActions.deleteLink, (state, props) => ({
+    ...state,
+    loading: {
+      ...emptyLoadingState,
+      delete: true
+    }
+  })),
+  on(LinkActions.deleteLinkSuccess, (state, { link }) => ({
+    linkIds: state.linkIds.filter(candidate => candidate !== link.id),
+    links: state.linkIds
+      .filter(candidate => candidate !== link.id)
+      .reduce((acc, next) => ({
+          ...acc,
+          [next]: state.links[next]
+        }),
+        {}
+      ),
+    loading: emptyLoadingState,
+    error: null
+  })),
+  on(LinkActions.deleteLinkFailure, (state, { error }) => ({
+    ...state,
+    loading: emptyLoadingState,
+    error
+  })),
 );
 
 export function reducer(state: LinkState | undefined, action: Action): LinkState {

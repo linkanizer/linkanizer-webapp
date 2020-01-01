@@ -3,14 +3,15 @@ import { ILink, IList } from '../../models';
 import { FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, switchMap } from 'rxjs/operators';
+import { filter, switchMap, take } from 'rxjs/operators';
 import { State } from '../../reducers';
-import { Store } from '@ngrx/store';
+import { ActionsSubject, Store } from '@ngrx/store';
 import { selectListById } from '../../selectors/list.selectors';
 
 import * as LinkActions from '../../actions/link.actions';
 import * as ListActions from '../../actions/list.actions';
-import { selectLinks, selectLinksAll, selectLinksCreateLoading, selectLinksRetrieveLoading } from '../../selectors/link.selectors';
+import { selectLinksAll, selectLinksCreateLoading, selectLinksRetrieveLoading } from '../../selectors/link.selectors';
+import { ofType } from '@ngrx/effects';
 
 @Component({
   selector: 'app-list-detail',
@@ -27,6 +28,7 @@ export class ListDetailComponent implements OnInit {
   public urlControl = new FormControl('', [Validators.required]);
 
   constructor(private store: Store<State>,
+              private dispatcher: ActionsSubject,
               private router: Router,
               private route: ActivatedRoute) {
   }
@@ -50,6 +52,16 @@ export class ListDetailComponent implements OnInit {
           this.store.dispatch(LinkActions.getAllLinks({ list }));
         }
       );
+
+    this.dispatcher
+      .pipe(
+        ofType(LinkActions.createLinkSuccess)
+      )
+      .subscribe(
+        () => {
+          this.urlControl.reset();
+        }
+      );
   }
 
   addLink(): void {
@@ -58,11 +70,6 @@ export class ListDetailComponent implements OnInit {
     };
 
     this.store.dispatch(LinkActions.createLink({ list: this.list, link }));
-
-    // TODO how to clear urlControl value after submission complete?
-    // TODO update links store on update?
-    // this.urlControl.setValue('');
-    //           this.links$ = this.linkService.getAll(this.list);
   }
 
   deleteLink(link: ILink): void {
@@ -70,10 +77,21 @@ export class ListDetailComponent implements OnInit {
   }
 
   deleteList(): void {
-    this.store.dispatch(ListActions.deleteList({list: this.list}));
+    this.store.dispatch(ListActions.deleteList({ list: this.list }));
+  }
 
-    // TODO event or store sync
-    // this.router.navigate(['/dashboard/']);
+  openAll(): void {
+    this.links$
+      .pipe(
+        take(1)
+      )
+      .subscribe(
+      links => {
+        for (const link of links) {
+          window.open(link.url, '_blank');
+        }
+      }
+    );
   }
 
 }

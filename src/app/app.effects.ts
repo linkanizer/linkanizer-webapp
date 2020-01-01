@@ -82,8 +82,11 @@ export class ListEffects {
       mergeMap(action =>
         this.listService.delete(action.list)
           .pipe(
+            tap(
+              list => this.router.navigate(['/dashboard/'])
+            ),
             map(
-              list => ListActions.deleteListSuccess({ list }),
+              () => ListActions.deleteListSuccess({ list: action.list }),
             ),
             catchError(error => of(ListActions.deleteListFailure({ error })))
           )
@@ -110,6 +113,36 @@ export class LinkEffects {
               links => LinkActions.getAllLinksSuccess({ links })
             ),
             catchError(error => of(LinkActions.getAllLinksFailure({ error })))
+          )
+      )
+    )
+  );
+
+  createLink$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(LinkActions.createLink),
+      mergeMap(action =>
+        this.linkService.create(action.list, action.link.url)
+          .pipe(
+            map(
+              link => LinkActions.createLinkSuccess({ link }),
+            ),
+            catchError(error => of(LinkActions.createLinkFailure({ error })))
+          )
+      )
+    )
+  );
+
+  deleteLink$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(LinkActions.deleteLink),
+      mergeMap(action =>
+        this.linkService.delete(action.link)
+          .pipe(
+            map(
+              () => LinkActions.deleteLinkSuccess({ link: action.link }),
+            ),
+            catchError(error => of(LinkActions.deleteLinkFailure({ error })))
           )
       )
     )

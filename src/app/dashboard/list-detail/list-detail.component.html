@@ -7,14 +7,19 @@
 <div *ngIf="list !== null; else loadingList">
   <div class="d-flex flex-row">
     <h3 class="mr-auto">{{ list.name }}</h3>
-    <div ngbDropdown class="d-inline-block">
-      <button class="btn btn-outline-secondary" id="dropdownListOptions" ngbDropdownToggle></button>
-      <div ngbDropdownMenu aria-labelledby="dropdownListOptions">
-        <button ngbDropdownItem>Open All</button>
-        <button ngbDropdownItem
-                (click)="deleteList()">
-          Delete
-        </button>
+    <div>
+      <button class="btn btn-outline-secondary mr-1"
+              (click)="openAll()">
+        Open All
+      </button>
+      <div ngbDropdown class="d-inline-block">
+        <button class="btn btn-outline-secondary" id="dropdownListOptions" ngbDropdownToggle></button>
+        <div ngbDropdownMenu aria-labelledby="dropdownListOptions">
+          <button ngbDropdownItem
+                  (click)="deleteList()">
+            Delete
+          </button>
+        </div>
       </div>
     </div>
   </div>
