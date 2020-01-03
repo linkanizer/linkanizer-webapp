@@ -45,3 +45,18 @@ export const deleteLinkFailure = createAction(
   '[Links] Delete Link Failure',
   props<{ error: Error }>()
 );
+
+export const moveLink = createAction(
+  '[Links] Move Link',
+  props<{ link: ILink, new_order: number }>()
+);
+
+export const moveLinkSuccess = createAction(
+  '[Links] Move Link Success',
+  props<{ link: ILink, new_order: number }>()
+);
+
+export const moveLinkFailure = createAction(
+  '[Links] Move Link Failure',
+  props<{ error: Error }>()
+);

@@ -10,8 +10,15 @@ import { selectListById } from '../../selectors/list.selectors';
 
 import * as LinkActions from '../../actions/link.actions';
 import * as ListActions from '../../actions/list.actions';
-import { selectLinksAll, selectLinksCreateLoading, selectLinksRetrieveLoading } from '../../selectors/link.selectors';
+
+import {
+  selectLinksAll,
+  selectLinksCreateLoading,
+  selectLinksMoveLoading,
+  selectLinksRetrieveLoading
+} from '../../selectors/link.selectors';
 import { ofType } from '@ngrx/effects';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-list-detail',
@@ -90,6 +97,23 @@ export class ListDetailComponent implements OnInit {
           for (const link of links) {
             window.open(link.url, '_blank');
           }
+        }
+      );
+  }
+
+  handleLinkDropped(event: CdkDragDrop<ILink[]>): void {
+    this.links$
+      .pipe(
+        take(1)
+      )
+      .subscribe(
+        links => {
+          const link = links[event.previousIndex];
+
+          // Use 1-indexed order server side
+          const order = event.currentIndex + 1;
+
+          this.store.dispatch(LinkActions.moveLink({ link, new_order: order }));
         }
       );
   }

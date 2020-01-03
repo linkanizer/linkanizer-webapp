@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 
@@ -17,6 +18,7 @@ import { NoListSelectedComponent } from './no-list-selected/no-list-selected.com
     CommonModule,
     DashboardRoutingModule,
     NgbModule,
+    DragDropModule,
     FormsModule,
     ReactiveFormsModule,
   ]

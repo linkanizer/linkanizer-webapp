@@ -133,6 +133,21 @@ export class LinkEffects {
     )
   );
 
+  moveLink$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(LinkActions.moveLink),
+      mergeMap(action =>
+        this.linkService.move(action.link, action.new_order)
+          .pipe(
+            map(
+              () => LinkActions.moveLinkSuccess(action),
+            ),
+            catchError(error => of(LinkActions.moveLinkFailure({ error })))
+          )
+      )
+    )
+  );
+
   deleteLink$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LinkActions.deleteLink),

@@ -7,6 +7,7 @@ export const selectLinks = (state: State) => state.links;
 export const selectLinksAll = createSelector(
   selectLinks,
   (state: LinkState) => Array.from(Object.values(state.links))
+    .sort((a, b) => a.order - b.order)
 );
 
 export const selectLinksRetrieveLoading = createSelector(
@@ -22,6 +23,11 @@ export const selectLinksCreateLoading = createSelector(
 export const selectLinksDeleteLoading = createSelector(
   selectLinks,
   (state: LinkState) => state.loading.delete
+);
+
+export const selectLinksMoveLoading = createSelector(
+  selectLinks,
+  (state: LinkState) => state.loading.move
 );
 
 export const selectLinkById = createSelector(

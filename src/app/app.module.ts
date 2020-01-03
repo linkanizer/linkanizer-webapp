@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { StoreModule } from '@ngrx/store';
 import { metaReducers, reducers } from './reducers';
@@ -40,6 +41,7 @@ import { ErrorInterceptorService } from './services/error.interceptor.service';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    DragDropModule,
     NgbModule,
     FormsModule,
     ReactiveFormsModule,

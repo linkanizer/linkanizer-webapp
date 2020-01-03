@@ -10,6 +10,7 @@ export interface LinkState {
     retrieve: boolean;
     create: boolean;
     delete: boolean;
+    move: boolean;
   };
   error: Error;
 }
@@ -17,7 +18,8 @@ export interface LinkState {
 const emptyLoadingState = {
   retrieve: false,
   create: false,
-  delete: false
+  delete: false,
+  move: false
 };
 
 const initialState: LinkState = {
@@ -65,6 +67,57 @@ const listReducer = createReducer(
     error: null
   })),
   on(LinkActions.createLinkFailure, (state, { error }) => ({
+    ...state,
+    loading: emptyLoadingState,
+    error
+  })),
+  on(LinkActions.moveLink, state => ({
+    ...state,
+    loading: {
+      ...emptyLoadingState,
+      move: true
+    }
+  })),
+  on(LinkActions.moveLinkSuccess, (state, { link, new_order }) => {
+    const newState: LinkState = {
+      linkIds: [...state.linkIds],
+      links: { ...state.links },
+      loading: emptyLoadingState,
+      error: null
+    };
+
+    // thanks to https://www.revsys.com/tidbits/keeping-django-model-objects-ordered/
+
+    const current_order = link.order;
+
+    for (const linkId of state.linkIds.filter(candidate => candidate !== link.id)) {
+      const obj = newState.links[linkId];
+
+      if (new_order < current_order) {
+        if (obj.order < current_order && obj.order >= new_order) {
+          newState.links[linkId] = {
+            ...obj,
+            order: obj.order + 1
+          };
+        }
+      } else {
+        if (obj.order <= new_order && obj.order > current_order) {
+          newState.links[linkId] = {
+            ...obj,
+            order: obj.order - 1
+          };
+        }
+      }
+    }
+
+    newState.links[link.id] = {
+      ...link,
+      order: new_order
+    };
+
+    return newState;
+  }),
+  on(LinkActions.moveLinkFailure, (state, { error }) => ({
     ...state,
     loading: emptyLoadingState,
     error

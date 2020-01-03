@@ -23,6 +23,14 @@ export class LinkService {
     return this.http.post<ILink>(`${environment.api}/links/`, link);
   }
 
+  public move(link: ILink, order: number): Observable<any> {
+    const payload = {
+      order
+    };
+
+    return this.http.post(`${environment.api}/links/${link.id}/move/`, payload);
+  }
+
   public getAll(list: IList): Observable<ILink[]> {
     const params = {
       list: list.id
