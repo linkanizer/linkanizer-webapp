@@ -8,9 +8,9 @@ describe('NoListSelectedComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NoListSelectedComponent ]
+      declarations: [NoListSelectedComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

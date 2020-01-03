@@ -4,23 +4,23 @@
 
     <div class="list-group list-group-flush">
       <a *ngFor="let list of lists$ | async"
+         [routerLink]="['/dashboard/list/', list.id]"
          class="list-group-item list-group-item-action"
-         routerLinkActive="active"
-         [routerLink]="['/dashboard/list/', list.id]">
+         routerLinkActive="active">
         {{ list.name }}
       </a>
     </div>
 
-    <form class="form-inline my-2 my-lg-0"
-          (ngSubmit)="createList()">
-      <input id="new-list-field"
+    <form (ngSubmit)="createList()"
+          class="form-inline my-2 my-lg-0">
+      <input [formControl]="nameControl"
+             aria-label="New list"
              class="form-control mr-sm-2"
-             [formControl]="nameControl"
-             type="text"
+             id="new-list-field"
              placeholder="New list..."
-             aria-label="New list">
-      <button class="btn btn-secondary my-2"
-              [disabled]="!nameControl.valid || (listsCreateLoading$ | async)"
+             type="text">
+      <button [disabled]="!nameControl.valid || (listsCreateLoading$ | async)"
+              class="btn btn-secondary my-2"
               type="submit">
         <span *ngIf="!(listsCreateLoading$ | async)">
           <i class="fa fa-plus"></i>

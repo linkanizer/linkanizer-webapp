@@ -86,12 +86,12 @@ export class ListDetailComponent implements OnInit {
         take(1)
       )
       .subscribe(
-      links => {
-        for (const link of links) {
-          window.open(link.url, '_blank');
+        links => {
+          for (const link of links) {
+            window.open(link.url, '_blank');
+          }
         }
-      }
-    );
+      );
   }
 
 }

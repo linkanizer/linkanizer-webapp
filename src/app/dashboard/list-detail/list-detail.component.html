@@ -8,15 +8,15 @@
   <div class="d-flex flex-row">
     <h3 class="mr-auto">{{ list.name }}</h3>
     <div>
-      <button class="btn btn-outline-secondary mr-1"
-              (click)="openAll()">
+      <button (click)="openAll()"
+              class="btn btn-outline-secondary mr-1">
         Open All
       </button>
-      <div ngbDropdown class="d-inline-block">
+      <div class="d-inline-block" ngbDropdown>
         <button class="btn btn-outline-secondary" id="dropdownListOptions" ngbDropdownToggle></button>
-        <div ngbDropdownMenu aria-labelledby="dropdownListOptions">
-          <button ngbDropdownItem
-                  (click)="deleteList()">
+        <div aria-labelledby="dropdownListOptions" ngbDropdownMenu>
+          <button (click)="deleteList()"
+                  ngbDropdownItem>
             Delete
           </button>
         </div>
@@ -24,16 +24,16 @@
     </div>
   </div>
 
-  <form class="form-inline my-2 my-lg-0"
-        (ngSubmit)="addLink()">
-    <input id="new-link-url-field"
+  <form (ngSubmit)="addLink()"
+        class="form-inline my-2 my-lg-0">
+    <input [formControl]="urlControl"
+           aria-label="URL"
            class="form-control mr-sm-2"
-           [formControl]="urlControl"
-           type="text"
+           id="new-link-url-field"
            placeholder="URL"
-           aria-label="URL">
-    <button class="btn btn-secondary my-2"
-            [disabled]="!urlControl.valid || (linkCreateLoading$ | async)"
+           type="text">
+    <button [disabled]="!urlControl.valid || (linkCreateLoading$ | async)"
+            class="btn btn-secondary my-2"
             type="submit">
         <span *ngIf="!(linkCreateLoading$ | async)">
           <i class="fa fa-plus"></i>
@@ -54,18 +54,18 @@
         class="list-group-item">
       <div>
         <div class="d-flex w-100 justify-content-between">
-          <a class="mb-1"
-             target="_blank"
-             [href]="link.url">
+          <a [href]="link.url"
+             class="mb-1"
+             target="_blank">
             {{ link.title }}
           </a>
 
-          <div class="btn-toolbar"
-               role="toolbar"
-               aria-label="Toolbar with button groups">
-            <div class="btn-group mr-2" role="group" aria-label="Second group">
-              <button class="btn btn-danger"
-                      (click)="deleteLink(link)">
+          <div aria-label="Toolbar with button groups"
+               class="btn-toolbar"
+               role="toolbar">
+            <div aria-label="Second group" class="btn-group mr-2" role="group">
+              <button (click)="deleteLink(link)"
+                      class="btn btn-danger">
                 <i class="fa fa-trash"></i>
               </button>
             </div>

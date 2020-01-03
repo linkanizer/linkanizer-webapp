@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { State } from '../reducers';
 import { Store } from '@ngrx/store';
 import { selectAuthLoading, selectAuthUserIsLoggedIn } from '../selectors';

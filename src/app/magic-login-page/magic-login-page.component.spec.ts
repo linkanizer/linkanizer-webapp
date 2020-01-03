@@ -8,9 +8,9 @@ describe('MagicLoginPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MagicLoginPageComponent ]
+      declarations: [MagicLoginPageComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

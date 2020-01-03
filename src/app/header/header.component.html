@@ -29,25 +29,25 @@
     <ul *ngIf="loggedIn$ | async ; else login"
         class="navbar-nav">
       <li>
-        <a class="btn btn-secondary"
-           routerLink="/"
-           (click)="logout()">
+        <a (click)="logout()"
+           class="btn btn-secondary"
+           routerLink="/">
           Logout
         </a>
       </li>
     </ul>
     <ng-template #login>
       <form
-        class="form-inline my-2 my-lg-0"
-        (ngSubmit)="request_login_email()">
-        <input class="form-control mr-sm-2"
-               [formControl]="emailControl"
+        (ngSubmit)="request_login_email()"
+        class="form-inline my-2 my-lg-0">
+        <input [formControl]="emailControl"
+               aria-label="Email"
+               class="form-control mr-sm-2"
                name="email"
-               type="email"
                placeholder="Email"
-               aria-label="Email">
-        <button class="btn btn-secondary my-2 my-sm-0"
-                [disabled]="!emailControl.valid || (authLoading$ | async)"
+               type="email">
+        <button [disabled]="!emailControl.valid || (authLoading$ | async)"
+                class="btn btn-secondary my-2 my-sm-0"
                 type="submit">
 
           <span *ngIf="!(authLoading$ | async)">

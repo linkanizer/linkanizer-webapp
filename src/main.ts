@@ -4,10 +4,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
-import {
-  getAllDataFromLocalForage,
-  default as localForage,
-} from 'ngrx-store-persist';
+import { default as localForage, getAllDataFromLocalForage, } from 'ngrx-store-persist';
 
 if (environment.production) {
   enableProdMode();
