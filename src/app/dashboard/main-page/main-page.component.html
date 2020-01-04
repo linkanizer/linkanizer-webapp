@@ -2,11 +2,14 @@
   <div class="col-4">
     <h3>Lists</h3>
 
-    <div class="list-group list-group-flush">
+    <div class="list-group list-group-flush"
+         cdkDropList
+         (cdkDropListDropped)="handleListDropped($event)">
       <a *ngFor="let list of lists$ | async"
          [routerLink]="['/dashboard/list/', list.id]"
          class="list-group-item list-group-item-action"
-         routerLinkActive="active">
+         routerLinkActive="active"
+         cdkDrag>
         {{ list.name }}
       </a>
     </div>

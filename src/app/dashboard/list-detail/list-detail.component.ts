@@ -101,7 +101,7 @@ export class ListDetailComponent implements OnInit {
       );
   }
 
-  handleLinkDropped(event: CdkDragDrop<ILink[]>): void {
+  handleLinkDropped(event: CdkDragDrop<any>): void {
     this.links$
       .pipe(
         take(1)

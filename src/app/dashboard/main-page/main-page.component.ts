@@ -6,6 +6,8 @@ import { ActionsSubject, Store } from '@ngrx/store';
 import { selectListsAll, selectListsCreateLoading, selectListsRetrieveLoading } from '../../selectors/list.selectors';
 import { Observable } from 'rxjs';
 import { ofType } from '@ngrx/effects';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { take } from 'rxjs/operators';
 
 import * as ListActions from '../../actions/list.actions';
 
@@ -42,5 +44,22 @@ export class MainPageComponent implements OnInit {
 
   public createList(): void {
     this.store.dispatch(ListActions.createList({ list: { name: this.nameControl.value } }));
+  }
+
+  public handleListDropped(event: CdkDragDrop<any>): void {
+    this.lists$
+      .pipe(
+        take(1)
+      )
+      .subscribe(
+        lists => {
+          const list = lists[event.previousIndex];
+
+          // Use 1-indexed order server side
+          const order = event.currentIndex + 1;
+
+          this.store.dispatch(ListActions.moveList({ list, new_order: order }));
+        }
+      );
   }
 }

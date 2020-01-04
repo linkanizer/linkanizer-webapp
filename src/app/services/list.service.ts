@@ -28,8 +28,15 @@ export class ListService {
     return this.http.post<IList>(`${environment.api}/lists/`, list);
   }
 
+  public move(list: IList, order: number): Observable<any> {
+    const payload = {
+      order
+    };
+
+    return this.http.post(`${environment.api}/lists/${list.id}/move/`, payload);
+  }
+
   public delete(list: IList): Observable<IList> {
-    // TODO check API return for delete endpoint
     return this.http.delete<IList>(`${environment.api}/lists/${list.id}/`);
   }
 }

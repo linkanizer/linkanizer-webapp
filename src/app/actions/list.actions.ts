@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IList } from '../models';
+import { ILink, IList } from '../models';
 
 export const getAllLists = createAction(
   '[Lists] Get All Lists'
@@ -42,5 +42,20 @@ export const deleteListSuccess = createAction(
 
 export const deleteListFailure = createAction(
   '[Lists] Delete List Failure',
+  props<{ error: Error }>()
+);
+
+export const moveList = createAction(
+  '[Lists] Move List',
+  props<{ list: IList, new_order: number }>()
+);
+
+export const moveListSuccess = createAction(
+  '[Lists] Move List Success',
+  props<{ list: IList, new_order: number }>()
+);
+
+export const moveListFailure = createAction(
+  '[Lists] Move List Failure',
   props<{ error: Error }>()
 );

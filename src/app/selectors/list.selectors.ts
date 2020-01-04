@@ -7,6 +7,7 @@ export const selectLists = (state: State) => state.lists;
 export const selectListsAll = createSelector(
   selectLists,
   (state: ListState) => Array.from(Object.values(state.lists))
+    .sort((a, b) => a.order - b.order)
 );
 
 export const selectListsRetrieveLoading = createSelector(

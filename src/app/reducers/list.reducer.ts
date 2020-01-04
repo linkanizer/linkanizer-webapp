@@ -68,6 +68,57 @@ const listReducer = createReducer(
     loading: emptyLoadingState,
     error
   })),
+  on(ListActions.moveList, state => ({
+    ...state,
+    loading: {
+      ...emptyLoadingState,
+      move: true
+    }
+  })),
+  on(ListActions.moveListSuccess, (state, { list, new_order }) => {
+    const newState: ListState = {
+      listIds: [...state.listIds],
+      lists: { ...state.lists },
+      loading: emptyLoadingState,
+      error: null
+    };
+
+    // thanks to https://www.revsys.com/tidbits/keeping-django-model-objects-ordered/
+
+    const current_order = list.order;
+
+    for (const listId of state.listIds.filter(candidate => candidate !== list.id)) {
+      const obj = newState.lists[listId];
+
+      if (new_order < current_order) {
+        if (obj.order < current_order && obj.order >= new_order) {
+          newState.lists[listId] = {
+            ...obj,
+            order: obj.order + 1
+          };
+        }
+      } else {
+        if (obj.order <= new_order && obj.order > current_order) {
+          newState.lists[listId] = {
+            ...obj,
+            order: obj.order - 1
+          };
+        }
+      }
+    }
+
+    newState.lists[list.id] = {
+      ...list,
+      order: new_order
+    };
+
+    return newState;
+  }),
+  on(ListActions.moveListFailure, (state, { error }) => ({
+    ...state,
+    loading: emptyLoadingState,
+    error
+  })),
   on(ListActions.deleteList, (state, props) => ({
     ...state,
     loading: {

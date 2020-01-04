@@ -76,6 +76,21 @@ export class ListEffects {
     )
   );
 
+  moveList$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ListActions.moveList),
+      mergeMap(action =>
+        this.listService.move(action.list, action.new_order)
+          .pipe(
+            map(
+              () => ListActions.moveListSuccess(action),
+            ),
+            catchError(error => of(ListActions.moveListFailure({ error })))
+          )
+      )
+    )
+  );
+
   deleteList$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ListActions.deleteList),
