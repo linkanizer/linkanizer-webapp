@@ -11,12 +11,7 @@ import { selectListById } from '../../selectors/list.selectors';
 import * as LinkActions from '../../actions/link.actions';
 import * as ListActions from '../../actions/list.actions';
 
-import {
-  selectLinksAll,
-  selectLinksCreateLoading,
-  selectLinksMoveLoading,
-  selectLinksRetrieveLoading
-} from '../../selectors/link.selectors';
+import { selectLinksAll, selectLinksCreateLoading, selectLinksRetrieveLoading } from '../../selectors/link.selectors';
 import { ofType } from '@ngrx/effects';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
@@ -28,6 +23,7 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 export class ListDetailComponent implements OnInit {
 
   public list: IList = null;
+  public displayMode = 'list';
   public links$: Observable<ILink[]> = this.store.select(selectLinksAll);
   public linkCreateLoading$: Observable<boolean> = this.store.select(selectLinksCreateLoading);
   public linkRetrieveLoading$: Observable<boolean> = this.store.select(selectLinksRetrieveLoading);
