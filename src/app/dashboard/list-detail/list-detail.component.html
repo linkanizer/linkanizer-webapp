@@ -125,9 +125,11 @@
               <h5 class="card-title">
                 {{ link.title }}
               </h5>
-              <h6 class="card-subtitle mb-2 text-muted">
+              <a class="card-subtitle mb-2 text-muted h6"
+                 target="_blank"
+                 [href]="link.url">
                 {{ link.url }}
-              </h6>
+              </a>
               <p *ngIf="link.description"
                  class="card-text">
                 {{ link.description }}

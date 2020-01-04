@@ -26,7 +26,7 @@ import { AboutPageComponent } from './about-page/about-page.component';
 import { MagicLoginPageComponent } from './magic-login-page/magic-login-page.component';
 
 import { AuthInterceptorService } from './services/auth.interceptor.service';
-import { ErrorInterceptorService } from './services/error.interceptor.service';
+
 
 @NgModule({
   declarations: [
@@ -61,7 +61,6 @@ import { ErrorInterceptorService } from './services/error.interceptor.service';
     EffectsModule.forRoot(AppEffects),
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true },
   ],
   bootstrap: [AppComponent]

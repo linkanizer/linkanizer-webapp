@@ -3,8 +3,9 @@ import { FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { State } from '../reducers';
 import { Store } from '@ngrx/store';
-import { selectAuthLoading, selectAuthUserIsLoggedIn } from '../selectors';
+import { selectAuthLoading, selectAuthUser, selectAuthUserIsLoggedIn } from '../selectors';
 import * as AuthActions from '../actions/auth.actions';
+import { IUser } from '../models';
 
 @Component({
   selector: 'app-header',
@@ -14,6 +15,7 @@ import * as AuthActions from '../actions/auth.actions';
 export class HeaderComponent implements OnInit {
 
   public loggedIn$: Observable<boolean> = this.store.select(selectAuthUserIsLoggedIn);
+  public user$: Observable<IUser> = this.store.select(selectAuthUser);
   public authLoading$: Observable<boolean> = this.store.select(selectAuthLoading);
 
   public emailControl: FormControl = new FormControl('', [Validators.email, Validators.required]);

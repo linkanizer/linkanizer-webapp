@@ -15,11 +15,16 @@ export const loginEmailFailure = createAction(
   props<{ error: Error }>()
 );
 
-export const login = createAction(
-  '[Auth] Login',
-  props<{ user: IUser }>()
-);
-
 export const logout = createAction(
   '[Auth] Logout'
+);
+
+export const authenticate = createAction(
+  '[Auth] Authenticate',
+  props<{ jwt: string }>()
+);
+
+export const authenticateSuccess = createAction(
+  '[Auth] Authenticate Success',
+  props<{ user: IUser }>()
 );

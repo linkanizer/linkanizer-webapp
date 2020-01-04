@@ -20,10 +20,7 @@ export class MagicLoginPageComponent implements OnInit {
   ngOnInit() {
     const jwt = this.route.snapshot.params.token;
 
-    // TODO check if token is valid
-    this.store.dispatch(AuthActions.login({ user: { jwt } }));
-
-    this.router.navigate(['/dashboard/']);
+    this.store.dispatch(AuthActions.authenticate({ jwt }));
   }
 
 }

@@ -28,6 +28,12 @@
     </ul>
     <ul *ngIf="loggedIn$ | async ; else login"
         class="navbar-nav">
+      <li *ngIf="user$ | async; let user"
+          class="mr-2">
+        <span class="navbar-text">
+          {{ user.email }}
+        </span>
+      </li>
       <li>
         <a (click)="logout()"
            class="btn btn-secondary"

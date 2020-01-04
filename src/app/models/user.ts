@@ -3,5 +3,9 @@ export interface ICredentials {
 }
 
 export interface IUser {
+  email: string;
+}
+
+export interface IAuthentication {
   jwt: string;
 }

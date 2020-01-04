@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 import * as AuthActions from './actions/auth.actions';
 import * as ListActions from './actions/list.actions';
 import * as LinkActions from './actions/link.actions';
-
+import * as ErrorActions from './actions/error.actions';
 
 import { AuthService } from './services/auth.service';
-import { ToastrService } from 'ngx-toastr';
 import { ListService } from './services/list.service';
-import { Router } from '@angular/router';
 import { LinkService } from './services/link.service';
+
+import { environment } from '../environments/environment';
+
 
 @Injectable()
 export class AuthEffects {
@@ -34,7 +37,26 @@ export class AuthEffects {
     )
   );
 
+  authenticate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.authenticate),
+      mergeMap(action =>
+        this.authService.authenticate(action.jwt).pipe(
+          map(user => AuthActions.authenticateSuccess({ user })),
+          tap(
+            () => {
+              this.toastr.success('Login successful.');
+              this.router.navigate(['/dashboard/']);
+            },
+          ),
+          catchError(error => of(ErrorActions.appError({ error })))
+        )
+      )
+    )
+  );
+
   constructor(private actions$: Actions,
+              private router: Router,
               private authService: AuthService,
               private toastr: ToastrService) {
   }
@@ -184,9 +206,43 @@ export class LinkEffects {
   }
 }
 
+@Injectable()
+export class ErrorEffects {
+
+  error$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(ErrorActions.appError),
+        tap(
+          ({ error }) => {
+            if (!environment.production) {
+              console.error(error);
+            }
+
+            // do error handling here
+            let message = 'Unknown Error!';
+
+            if (error && error.message) {
+              message = error.message;
+            }
+
+            this.toastr.error(message, 'Error!', {
+              timeOut: 0
+            });
+          }
+        ),
+      ),
+    { dispatch: false }
+  );
+
+  constructor(private actions$: Actions,
+              private toastr: ToastrService) {
+  }
+}
+
 
 export default [
   AuthEffects,
   ListEffects,
-  LinkEffects
+  LinkEffects,
+  ErrorEffects
 ];
