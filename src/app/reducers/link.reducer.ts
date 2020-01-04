@@ -12,7 +12,6 @@ export interface LinkState {
     delete: boolean;
     move: boolean;
   };
-  error: Error;
 }
 
 const emptyLoadingState = {
@@ -26,7 +25,6 @@ const initialState: LinkState = {
   linkIds: [],
   links: {},
   loading: emptyLoadingState,
-  error: null
 };
 
 const listReducer = createReducer(
@@ -39,19 +37,16 @@ const listReducer = createReducer(
         ...emptyLoadingState,
         retrieve: true
       },
-      error: null
     };
   }),
-  on(LinkActions.getAllLinksFailure, (state, { error }) => ({
+  on(LinkActions.getAllLinksFailure, (state) => ({
     ...state,
     loading: emptyLoadingState,
-    error
   })),
   on(LinkActions.getAllLinksSuccess, (state, { links }) => ({
     linkIds: links.map(link => link.id),
     links: links.reduce((acc, next) => Object.assign(acc, { [next.id]: next }), {}),
     loading: emptyLoadingState,
-    error: null
   })),
   on(LinkActions.createLink, state => ({
     ...state,
@@ -64,12 +59,10 @@ const listReducer = createReducer(
     linkIds: [...state.linkIds, link.id],
     links: { ...state.links, [link.id]: link },
     loading: emptyLoadingState,
-    error: null
   })),
-  on(LinkActions.createLinkFailure, (state, { error }) => ({
+  on(LinkActions.createLinkFailure, (state) => ({
     ...state,
     loading: emptyLoadingState,
-    error
   })),
   on(LinkActions.moveLink, state => ({
     ...state,
@@ -83,25 +76,24 @@ const listReducer = createReducer(
       linkIds: [...state.linkIds],
       links: { ...state.links },
       loading: emptyLoadingState,
-      error: null
     };
 
     // thanks to https://www.revsys.com/tidbits/keeping-django-model-objects-ordered/
 
-    const current_order = link.order;
+    const currentOrder = link.order;
 
     for (const linkId of state.linkIds.filter(candidate => candidate !== link.id)) {
       const obj = newState.links[linkId];
 
-      if (new_order < current_order) {
-        if (obj.order < current_order && obj.order >= new_order) {
+      if (new_order < currentOrder) {
+        if (obj.order < currentOrder && obj.order >= new_order) {
           newState.links[linkId] = {
             ...obj,
             order: obj.order + 1
           };
         }
       } else {
-        if (obj.order <= new_order && obj.order > current_order) {
+        if (obj.order <= new_order && obj.order > currentOrder) {
           newState.links[linkId] = {
             ...obj,
             order: obj.order - 1
@@ -117,10 +109,9 @@ const listReducer = createReducer(
 
     return newState;
   }),
-  on(LinkActions.moveLinkFailure, (state, { error }) => ({
+  on(LinkActions.moveLinkFailure, (state) => ({
     ...state,
     loading: emptyLoadingState,
-    error
   })),
   on(LinkActions.deleteLink, (state, props) => ({
     ...state,
@@ -140,12 +131,10 @@ const listReducer = createReducer(
         {}
       ),
     loading: emptyLoadingState,
-    error: null
   })),
-  on(LinkActions.deleteLinkFailure, (state, { error }) => ({
+  on(LinkActions.deleteLinkFailure, (state) => ({
     ...state,
     loading: emptyLoadingState,
-    error
   })),
 );
 

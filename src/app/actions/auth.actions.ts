@@ -12,7 +12,6 @@ export const loginEmailSuccess = createAction(
 
 export const loginEmailFailure = createAction(
   '[Auth] Login Email Request Failure',
-  props<{ error: Error }>()
 );
 
 export const logout = createAction(
@@ -27,4 +26,8 @@ export const authenticate = createAction(
 export const authenticateSuccess = createAction(
   '[Auth] Authenticate Success',
   props<{ user: IUser }>()
+);
+
+export const authenticateFailure = createAction(
+  '[Auth] Authenticate Failure'
 );

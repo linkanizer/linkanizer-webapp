@@ -31,7 +31,11 @@ export class AuthEffects {
               this.toastr.success('Login email sent.');
             }
           ),
-          catchError(error => of(AuthActions.loginEmailFailure({ error })))
+          catchError(error => of(
+            AuthActions.loginEmailFailure(),
+            ErrorActions.appError({ error })
+            ),
+          )
         )
       )
     )
@@ -49,7 +53,10 @@ export class AuthEffects {
               this.router.navigate(['/dashboard/']);
             },
           ),
-          catchError(error => of(ErrorActions.appError({ error })))
+          catchError(error => of(
+            AuthActions.authenticateFailure(),
+            ErrorActions.appError({ error }))
+          )
         )
       )
     )
@@ -74,7 +81,7 @@ export class ListEffects {
             map(
               lists => ListActions.getAllListsSuccess({ lists })
             ),
-            catchError(error => of(ListActions.getAllListsFailure({ error })))
+            catchError(error => of(ListActions.getAllListsFailure(), ErrorActions.appError({ error })))
           )
       )
     )
@@ -92,7 +99,7 @@ export class ListEffects {
             map(
               list => ListActions.createListSuccess({ list }),
             ),
-            catchError(error => of(ListActions.createListFailure({ error })))
+            catchError(error => of(ListActions.createListFailure(), ErrorActions.appError({ error })))
           )
       )
     )
@@ -107,7 +114,7 @@ export class ListEffects {
             map(
               () => ListActions.moveListSuccess(action),
             ),
-            catchError(error => of(ListActions.moveListFailure({ error })))
+            catchError(error => of(ListActions.moveListFailure(), ErrorActions.appError({ error })))
           )
       )
     )
@@ -125,7 +132,7 @@ export class ListEffects {
             map(
               () => ListActions.deleteListSuccess({ list: action.list }),
             ),
-            catchError(error => of(ListActions.deleteListFailure({ error })))
+            catchError(error => of(ListActions.deleteListFailure(), ErrorActions.appError({ error })))
           )
       )
     )
@@ -149,7 +156,7 @@ export class LinkEffects {
             map(
               links => LinkActions.getAllLinksSuccess({ links })
             ),
-            catchError(error => of(LinkActions.getAllLinksFailure({ error })))
+            catchError(error => of(LinkActions.getAllLinksFailure(), ErrorActions.appError({ error })))
           )
       )
     )
@@ -164,7 +171,7 @@ export class LinkEffects {
             map(
               link => LinkActions.createLinkSuccess({ link }),
             ),
-            catchError(error => of(LinkActions.createLinkFailure({ error })))
+            catchError(error => of(LinkActions.createLinkFailure(), ErrorActions.appError({ error })))
           )
       )
     )
@@ -179,7 +186,7 @@ export class LinkEffects {
             map(
               () => LinkActions.moveLinkSuccess(action),
             ),
-            catchError(error => of(LinkActions.moveLinkFailure({ error })))
+            catchError(error => of(LinkActions.moveLinkFailure(), ErrorActions.appError({ error })))
           )
       )
     )
@@ -194,7 +201,7 @@ export class LinkEffects {
             map(
               () => LinkActions.deleteLinkSuccess({ link: action.link }),
             ),
-            catchError(error => of(LinkActions.deleteLinkFailure({ error })))
+            catchError(error => of(LinkActions.deleteLinkFailure(), ErrorActions.appError({ error })))
           )
       )
     )

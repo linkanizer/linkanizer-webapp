@@ -8,14 +8,14 @@
   <div class="d-flex flex-row">
     <h3 class="mr-auto">{{ list.name }}</h3>
     <div>
-      <div class="btn-group btn-group-toggle mr-1"
-           ngbRadioGroup
+      <div [(ngModel)]="displayMode"
+           class="btn-group btn-group-toggle mr-1"
            name="radioBasic"
-           [(ngModel)]="displayMode">
-        <label ngbButtonLabel class="btn-outline-secondary">
+           ngbRadioGroup>
+        <label class="btn-outline-secondary" ngbButtonLabel>
           <input ngbButton type="radio" value="list"> List
         </label>
-        <label ngbButtonLabel class="btn-outline-secondary">
+        <label class="btn-outline-secondary" ngbButtonLabel>
           <input ngbButton type="radio" value="cards"> Cards
         </label>
       </div>
@@ -63,12 +63,12 @@
   <div *ngIf="links$ | async as links"
        [ngSwitch]="displayMode">
     <div *ngSwitchCase="'list'">
-      <ul class="list-group"
+      <ul (cdkDropListDropped)="handleLinkDropped($event)"
           cdkDropList
-          (cdkDropListDropped)="handleLinkDropped($event)">
+          class="list-group">
         <li *ngFor="let link of links"
-            class="list-group-item"
-            cdkDrag>
+            cdkDrag
+            class="list-group-item">
           <div>
             <div class="d-flex w-100 justify-content-between">
               <a [href]="link.url"
@@ -82,8 +82,8 @@
                    role="toolbar">
                 <div aria-label="Group" class="btn-group mr-2" role="group">
                   <div class="d-inline-block" ngbDropdown>
-                    <button class="btn btn-outline-secondary"
-                            [id]="'dropdownListOptions-' + link.id"
+                    <button [id]="'dropdownListOptions-' + link.id"
+                            class="btn btn-outline-secondary"
                             ngbDropdownToggle></button>
                     <div [attr.aria-labelledby]="'dropdownListOptions-' + link.id"
                          ngbDropdownMenu>
@@ -118,16 +118,16 @@
                target="_blank">
               <img *ngIf="link.imageUrl"
                    [src]="link.imageUrl"
-                   class="card-img-top"
-                   alt="Link preview">
+                   alt="Link preview"
+                   class="card-img-top">
             </a>
             <div class="card-body">
               <h5 class="card-title">
                 {{ link.title }}
               </h5>
-              <a class="card-subtitle mb-2 text-muted h6"
-                 target="_blank"
-                 [href]="link.url">
+              <a [href]="link.url"
+                 class="card-subtitle mb-2 text-muted h6"
+                 target="_blank">
                 {{ link.url }}
               </a>
               <p *ngIf="link.description"

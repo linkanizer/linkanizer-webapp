@@ -11,7 +11,6 @@ export interface ListState {
     create: boolean;
     delete: boolean;
   };
-  error: Error;
 }
 
 const emptyLoadingState = {
@@ -24,7 +23,6 @@ const initialState: ListState = {
   listIds: [],
   lists: {},
   loading: emptyLoadingState,
-  error: null
 };
 
 const listReducer = createReducer(
@@ -36,19 +34,16 @@ const listReducer = createReducer(
       ...emptyLoadingState,
       retrieve: true
     },
-    error: null
   })),
-  on(ListActions.getAllListsFailure, (state, { error }) => ({
+  on(ListActions.getAllListsFailure, (state) => ({
     listIds: [],
     lists: {},
     loading: emptyLoadingState,
-    error
   })),
   on(ListActions.getAllListsSuccess, (state, { lists }) => ({
     listIds: lists.map(list => list.id),
     lists: lists.reduce((acc, next) => Object.assign(acc, { [next.id]: next }), {}),
     loading: emptyLoadingState,
-    error: null
   })),
   on(ListActions.createList, (state, props) => ({
     ...state,
@@ -61,12 +56,10 @@ const listReducer = createReducer(
     listIds: [...state.listIds, list.id],
     lists: { ...state.lists, [list.id]: list },
     loading: emptyLoadingState,
-    error: null
   })),
-  on(ListActions.createListFailure, (state, { error }) => ({
+  on(ListActions.createListFailure, (state) => ({
     ...state,
     loading: emptyLoadingState,
-    error
   })),
   on(ListActions.moveList, state => ({
     ...state,
@@ -80,25 +73,24 @@ const listReducer = createReducer(
       listIds: [...state.listIds],
       lists: { ...state.lists },
       loading: emptyLoadingState,
-      error: null
     };
 
     // thanks to https://www.revsys.com/tidbits/keeping-django-model-objects-ordered/
 
-    const current_order = list.order;
+    const currentOrder = list.order;
 
     for (const listId of state.listIds.filter(candidate => candidate !== list.id)) {
       const obj = newState.lists[listId];
 
-      if (new_order < current_order) {
-        if (obj.order < current_order && obj.order >= new_order) {
+      if (new_order < currentOrder) {
+        if (obj.order < currentOrder && obj.order >= new_order) {
           newState.lists[listId] = {
             ...obj,
             order: obj.order + 1
           };
         }
       } else {
-        if (obj.order <= new_order && obj.order > current_order) {
+        if (obj.order <= new_order && obj.order > currentOrder) {
           newState.lists[listId] = {
             ...obj,
             order: obj.order - 1
@@ -114,10 +106,9 @@ const listReducer = createReducer(
 
     return newState;
   }),
-  on(ListActions.moveListFailure, (state, { error }) => ({
+  on(ListActions.moveListFailure, (state,) => ({
     ...state,
     loading: emptyLoadingState,
-    error
   })),
   on(ListActions.deleteList, (state, props) => ({
     ...state,
@@ -137,12 +128,10 @@ const listReducer = createReducer(
         {}
       ),
     loading: emptyLoadingState,
-    error: null
   })),
-  on(ListActions.deleteListFailure, (state, { error }) => ({
+  on(ListActions.deleteListFailure, (state) => ({
     ...state,
     loading: emptyLoadingState,
-    error
   })),
 );
 

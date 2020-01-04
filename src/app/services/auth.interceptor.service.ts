@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { State } from '../reducers';
 import { Store } from '@ngrx/store';
-import { selectAuthAuthentication, selectAuthUser } from '../selectors';
+import { selectAuthAuthentication } from '../selectors';
 import { switchMap } from 'rxjs/operators';
 
 /*
