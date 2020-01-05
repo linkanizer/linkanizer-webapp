@@ -1,3 +1,7 @@
 #new-link-url-field {
   flex: 1;
 }
+
+.movable {
+  cursor: move;
+}

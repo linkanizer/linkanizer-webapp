@@ -77,20 +77,25 @@
                 {{ link.title }}
               </a>
 
-              <div aria-label="Toolbar with button groups"
-                   class="btn-toolbar"
-                   role="toolbar">
-                <div aria-label="Group" class="btn-group mr-2" role="group">
-                  <div class="d-inline-block" ngbDropdown>
-                    <button [id]="'dropdownListOptions-' + link.id"
-                            class="btn btn-outline-secondary"
-                            ngbDropdownToggle></button>
-                    <div [attr.aria-labelledby]="'dropdownListOptions-' + link.id"
-                         ngbDropdownMenu>
-                      <button (click)="deleteLink(link)"
-                              ngbDropdownItem>
-                        Delete
-                      </button>
+              <div class="d-flex flex-row align-content-center justify-content-between">
+                <i cdkDragHandle
+                   class="fa fa-lg fa-arrows movable align-self-center mr-3"></i>
+
+                <div aria-label="Toolbar with button groups"
+                     class="btn-toolbar"
+                     role="toolbar">
+                  <div class="btn-group btn-group-sm mr-2" role="group">
+                    <div class="d-inline-block" ngbDropdown>
+                      <button [id]="'dropdownListOptions-' + link.id"
+                              class="btn btn-sm btn-outline-secondary"
+                              ngbDropdownToggle></button>
+                      <div [attr.aria-labelledby]="'dropdownListOptions-' + link.id"
+                           ngbDropdownMenu>
+                        <button (click)="deleteLink(link)"
+                                ngbDropdownItem>
+                          Delete
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
