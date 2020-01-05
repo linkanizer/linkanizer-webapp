@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment';
 import { State } from '../reducers';
 import { Store } from '@ngrx/store';
 import { selectAuthAuthentication } from '../selectors';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 
 /*
  * thanks to
@@ -22,25 +22,29 @@ export class AuthInterceptorService implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return this.store.select(selectAuthAuthentication)
-      .pipe(
-        switchMap(
-          auth => {
-            const whitelist = ['/auth/request-login-email'];
+    const whitelist = ['/auth/request-login-email'];
 
-            if (request.url.includes(environment.api)) {
-              if (whitelist.every(white => !request.url.includes(white))) {
+    if (request.url.includes(environment.api)) {
+      if (whitelist.every(white => !request.url.includes(white))) {
+        return this.store.select(selectAuthAuthentication)
+          .pipe(
+            take(1),
+            switchMap(
+              auth => {
+
                 request = request.clone({
                   setHeaders: {
                     Authorization: `Bearer ${auth.jwt}`
                   }
                 });
-              }
-            }
 
-            return next.handle(request);
-          }
-        )
-      );
+                return next.handle(request);
+              }
+            )
+          );
+      }
+    }
+
+    return next.handle(request);
   }
 }
