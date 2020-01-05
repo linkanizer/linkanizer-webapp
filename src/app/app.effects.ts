@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, tap } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
@@ -111,8 +111,8 @@ export class ListEffects {
       mergeMap(action =>
         this.listService.move(action.list, action.new_order)
           .pipe(
-            map(
-              () => ListActions.moveListSuccess(action),
+            switchMap(
+              () => [ListActions.moveListSuccess(action), ListActions.getAllLists()],
             ),
             catchError(error => of(ListActions.moveListFailure(), ErrorActions.appError({ error })))
           )
@@ -150,8 +150,8 @@ export class LinkEffects {
   getAll$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LinkActions.getAllLinks),
-      mergeMap(({ list }) =>
-        this.linkService.getAll(list)
+      mergeMap(() =>
+        this.linkService.getAll()
           .pipe(
             map(
               links => LinkActions.getAllLinksSuccess({ links })
@@ -183,8 +183,8 @@ export class LinkEffects {
       mergeMap(action =>
         this.linkService.move(action.link, action.new_order)
           .pipe(
-            map(
-              () => LinkActions.moveLinkSuccess(action),
+            switchMap(
+              () => [LinkActions.moveLinkSuccess(action), LinkActions.getAllLinks()],
             ),
             catchError(error => of(LinkActions.moveLinkFailure(), ErrorActions.appError({ error })))
           )

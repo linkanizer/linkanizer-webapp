@@ -7,5 +7,5 @@ export interface ILink {
 
   order: number;
 
-  listId: string;
+  list_id: string;
 }

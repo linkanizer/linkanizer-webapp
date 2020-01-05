@@ -31,12 +31,8 @@ export class LinkService {
     return this.http.post(`${environment.api}/links/${link.id}/move/`, payload);
   }
 
-  public getAll(list: IList): Observable<ILink[]> {
-    const params = {
-      list: list.id
-    };
-
-    return this.http.get<ILink[]>(`${environment.api}/links/`, { params });
+  public getAll(): Observable<ILink[]> {
+    return this.http.get<ILink[]>(`${environment.api}/links/`);
   }
 
   public delete(link: ILink): Observable<null> {

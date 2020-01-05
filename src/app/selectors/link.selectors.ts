@@ -1,12 +1,18 @@
 import { createSelector } from '@ngrx/store';
 import { State } from '../reducers';
 import { LinkState } from '../reducers/link.reducer';
+import { ILink } from '../models';
 
 export const selectLinks = (state: State) => state.links;
 
 export const selectLinksAll = createSelector(
   selectLinks,
   (state: LinkState) => Array.from(Object.values(state.links))
+);
+
+export const selectLinksForList = createSelector(
+  selectLinksAll,
+  (links: ILink[], { listId }) => links.filter(candidate => candidate.list_id === listId)
     .sort((a, b) => a.order - b.order)
 );
 

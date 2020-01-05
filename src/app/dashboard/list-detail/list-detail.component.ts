@@ -3,17 +3,16 @@ import { ILink, IList } from '../../models';
 import { FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, switchMap, take } from 'rxjs/operators';
+import { filter, map, switchMap, take } from 'rxjs/operators';
 import { State } from '../../reducers';
+import { ofType } from '@ngrx/effects';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { ActionsSubject, Store } from '@ngrx/store';
-import { selectListById } from '../../selectors/list.selectors';
+import { selectLinksAll, selectLinksCreateLoading, selectLinksForList, selectLinksRetrieveLoading, selectListById } from '../../selectors';
 
 import * as LinkActions from '../../actions/link.actions';
 import * as ListActions from '../../actions/list.actions';
 
-import { selectLinksAll, selectLinksCreateLoading, selectLinksRetrieveLoading } from '../../selectors/link.selectors';
-import { ofType } from '@ngrx/effects';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-list-detail',
@@ -23,8 +22,8 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 export class ListDetailComponent implements OnInit {
 
   public list: IList = null;
-  public displayMode = 'list';
-  public links$: Observable<ILink[]> = this.store.select(selectLinksAll);
+  public displayMode: 'list' | 'cards' = 'list';
+  public links$: Observable<ILink[]> = null;
   public linkCreateLoading$: Observable<boolean> = this.store.select(selectLinksCreateLoading);
   public linkRetrieveLoading$: Observable<boolean> = this.store.select(selectLinksRetrieveLoading);
 
@@ -52,9 +51,17 @@ export class ListDetailComponent implements OnInit {
       .subscribe(
         list => {
           this.list = list;
-          this.store.dispatch(LinkActions.getAllLinks({ list }));
         }
       );
+
+    this.links$ = this.route.paramMap
+      .pipe(
+        switchMap(
+          paramMap => this.store.select(selectLinksForList, { listId: paramMap.get('listId') })
+        ),
+      );
+
+    this.links$.subscribe(n => console.log('Links', n));
 
     this.dispatcher
       .pipe(

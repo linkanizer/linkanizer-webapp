@@ -3,7 +3,6 @@ import { ILink, IList } from '../models';
 
 export const getAllLinks = createAction(
   '[Links] Get All Links',
-  props<{ list: IList }>()
 );
 
 export const getAllLinksSuccess = createAction(

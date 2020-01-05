@@ -29,7 +29,7 @@ const initialState: LinkState = {
 
 const listReducer = createReducer(
   initialState,
-  on(LinkActions.getAllLinks, (state, { list }) => {
+  on(LinkActions.getAllLinks, () => {
     return {
       linkIds: [],
       links: {},
@@ -45,7 +45,7 @@ const listReducer = createReducer(
   })),
   on(LinkActions.getAllLinksSuccess, (state, { links }) => ({
     linkIds: links.map(link => link.id),
-    links: links.reduce((acc, next) => Object.assign(acc, { [next.id]: next }), {}),
+    links: links.reduce((acc, next) => ({ ...acc, [next.id]: next }), {}),
     loading: emptyLoadingState,
   })),
   on(LinkActions.createLink, state => ({
@@ -71,44 +71,10 @@ const listReducer = createReducer(
       move: true
     }
   })),
-  on(LinkActions.moveLinkSuccess, (state, { link, new_order }) => {
-    const newState: LinkState = {
-      linkIds: [...state.linkIds],
-      links: { ...state.links },
-      loading: emptyLoadingState,
-    };
-
-    // thanks to https://www.revsys.com/tidbits/keeping-django-model-objects-ordered/
-
-    const currentOrder = link.order;
-
-    for (const linkId of state.linkIds.filter(candidate => candidate !== link.id)) {
-      const obj = newState.links[linkId];
-
-      if (new_order < currentOrder) {
-        if (obj.order < currentOrder && obj.order >= new_order) {
-          newState.links[linkId] = {
-            ...obj,
-            order: obj.order + 1
-          };
-        }
-      } else {
-        if (obj.order <= new_order && obj.order > currentOrder) {
-          newState.links[linkId] = {
-            ...obj,
-            order: obj.order - 1
-          };
-        }
-      }
-    }
-
-    newState.links[link.id] = {
-      ...link,
-      order: new_order
-    };
-
-    return newState;
-  }),
+  on(LinkActions.moveLinkSuccess, (state) => ({
+    ...state,
+    loading: emptyLoadingState
+  })),
   on(LinkActions.moveLinkFailure, (state) => ({
     ...state,
     loading: emptyLoadingState,
