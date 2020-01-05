@@ -12,7 +12,7 @@ import { metaReducers, reducers } from './reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { storageSyncMetaReducer } from 'ngrx-store-persist';
 import { EffectsModule } from '@ngrx/effects';
-import AppEffects from './app.effects';
+import { AuthEffects, ErrorEffects, LinkEffects, ListEffects } from './app.effects';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -58,7 +58,7 @@ import { AuthInterceptorService } from './services/auth.interceptor.service';
       }
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot(AppEffects),
+    EffectsModule.forRoot([AuthEffects, LinkEffects, ListEffects, ErrorEffects]),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true },
