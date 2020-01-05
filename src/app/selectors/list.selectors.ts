@@ -25,6 +25,16 @@ export const selectListsDeleteLoading = createSelector(
   (state: ListState) => state.loading.delete
 );
 
+export const selectListsMoveLoading = createSelector(
+  selectLists,
+  (state: ListState) => state.loading.move
+);
+
+export const selectListsLoading = createSelector(
+  [selectListsCreateLoading, selectListsDeleteLoading, selectListsRetrieveLoading, selectListsMoveLoading],
+  (...args) => args.some(t => t)
+);
+
 export const selectListById = createSelector(
   selectLists,
   (state: ListState, { id }: { id: string }) => state.lists[id]

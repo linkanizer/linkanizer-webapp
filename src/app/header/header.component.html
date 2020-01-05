@@ -25,6 +25,12 @@
           About
         </a>
       </li>
+      <li *ngIf="appLoading$ | async"
+          class="nav-item d-flex flex-column justify-content-center">
+        <div class="spinner-border spinner-border-sm" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </li>
     </ul>
     <ul *ngIf="loggedIn$ | async ; else login"
         class="navbar-nav">

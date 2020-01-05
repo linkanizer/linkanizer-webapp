@@ -6,7 +6,7 @@ export const selectAuth = (state: State) => state.auth;
 
 export const selectAuthLoading = createSelector(
   selectAuth,
-  (state: AuthState) => state.loading
+  (state: AuthState) => !!state && state.loading
 );
 
 export const selectAuthUser = createSelector(

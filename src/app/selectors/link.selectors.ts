@@ -30,6 +30,11 @@ export const selectLinksMoveLoading = createSelector(
   (state: LinkState) => state.loading.move
 );
 
+export const selectLinksLoading = createSelector(
+  [selectLinksRetrieveLoading, selectLinksCreateLoading, selectLinksDeleteLoading, selectLinksMoveLoading],
+  (...args) => args.some(t => t)
+);
+
 export const selectLinkById = createSelector(
   selectLinks,
   (state: LinkState, { id }: { id: string }) => state.links[id]

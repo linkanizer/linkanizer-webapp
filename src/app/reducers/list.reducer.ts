@@ -10,13 +10,15 @@ export interface ListState {
     retrieve: boolean;
     create: boolean;
     delete: boolean;
+    move: boolean;
   };
 }
 
 const emptyLoadingState = {
   retrieve: false,
   create: false,
-  delete: false
+  delete: false,
+  move: false,
 };
 
 const initialState: ListState = {
