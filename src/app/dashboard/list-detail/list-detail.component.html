@@ -46,7 +46,7 @@
     <button [disabled]="!urlControl.valid || (linkCreateLoading$ | async)"
             class="btn btn-secondary my-2"
             type="submit">
-        <span *ngIf="!(linkCreateLoading$ | async)">
+        <span *ngIf="(linkCreateLoading$ | async) === false">
           <i class="fa fa-plus"></i>
         </span>
 

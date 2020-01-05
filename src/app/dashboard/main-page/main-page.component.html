@@ -25,7 +25,7 @@
       <button [disabled]="!nameControl.valid || (listsCreateLoading$ | async)"
               class="btn btn-secondary my-2"
               type="submit">
-        <span *ngIf="!(listsCreateLoading$ | async)">
+        <span *ngIf="(listsCreateLoading$ | async) === false">
           <i class="fa fa-plus"></i>
         </span>
 
