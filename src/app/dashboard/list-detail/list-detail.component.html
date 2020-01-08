@@ -141,6 +141,27 @@
                 {{ link.description }}
               </p>
             </div>
+            <div class="card-footer w-100 d-flex flex-row">
+              <div class="d-flex flex-column justify-content-center">
+                <span class="small text-muted">
+                  11 visits
+                </span>
+              </div>
+              <div class="btn-group btn-group-sm ml-auto" role="group">
+                <div class="d-inline-block" ngbDropdown>
+                  <button [id]="'dropdownListOptions-' + link.id"
+                          class="btn btn-sm btn-outline-secondary"
+                          ngbDropdownToggle></button>
+                  <div [attr.aria-labelledby]="'dropdownListOptions-' + link.id"
+                       ngbDropdownMenu>
+                    <button (click)="deleteLink(link)"
+                            ngbDropdownItem>
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
