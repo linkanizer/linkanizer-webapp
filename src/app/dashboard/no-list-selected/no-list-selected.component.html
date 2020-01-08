@@ -1,1 +1,40 @@
-<h3>Select or Create a List</h3>
+<div class="d-none d-md-block">
+  <h3>Select or Create a List</h3>
+</div>
+
+<div class="d-block d-md-none">
+  <h3>Lists</h3>
+
+  <div (cdkDropListDropped)="handleListDropped($event)"
+       cdkDropList
+       class="list-group list-group-flush">
+    <a *ngFor="let list of lists$ | async"
+       [routerLink]="['/dashboard/list/', list.id]"
+       cdkDrag
+       class="list-group-item list-group-item-action"
+       routerLinkActive="active">
+      {{ list.name }}
+    </a>
+  </div>
+
+  <form (ngSubmit)="createList()"
+        class="form-inline my-2 my-lg-0">
+    <input [formControl]="nameControl"
+           aria-label="New list"
+           class="form-control mr-sm-2"
+           id="new-list-field"
+           placeholder="New list..."
+           type="text">
+    <button [disabled]="!nameControl.valid || (listsCreateLoading$ | async)"
+            class="btn btn-secondary my-2"
+            type="submit">
+        <span *ngIf="(listsCreateLoading$ | async) === false">
+          <i class="fa fa-plus"></i>
+        </span>
+
+      <span *ngIf="listsCreateLoading$ | async">
+          <i class="fa fa-gear fa-spin"></i>
+        </span>
+    </button>
+  </form>
+</div>

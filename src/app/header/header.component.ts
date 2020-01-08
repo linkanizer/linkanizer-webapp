@@ -21,6 +21,8 @@ export class HeaderComponent implements OnInit {
 
   public emailControl: FormControl = new FormControl('', [Validators.email, Validators.required]);
 
+  public navbarOpen = false;
+
   constructor(private store: Store<State>) {
   }
 
