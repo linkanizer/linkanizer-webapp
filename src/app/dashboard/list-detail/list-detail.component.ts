@@ -61,8 +61,6 @@ export class ListDetailComponent implements OnInit {
         ),
       );
 
-    this.links$.subscribe(n => console.log('Links', n));
-
     this.dispatcher
       .pipe(
         ofType(LinkActions.createLinkSuccess)
