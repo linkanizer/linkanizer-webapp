@@ -1,76 +1,101 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
   <div class="container">
-    <a class="navbar-brand"
-       routerLink="/">
+    <a *ngIf="(loggedIn$ | async) === false"
+       class="navbar-brand"
+       routerLink="/dashboard/">
       Linkanizer
+      <div *ngIf="appLoading$ | async"
+           class="spinner-border text-light spinner-border-sm" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </a>
+    
+    <a *ngIf="loggedIn$ | async"
+       class="navbar-brand"
+       routerLink="/dashboard/">
+      Linkanizer
+      <div *ngIf="appLoading$ | async"
+           class="spinner-border text-light spinner-border-sm" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
     </a>
 
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link"
-           routerLink="/">
-          Home
-        </a>
-      </li>
-      <li *ngIf="loggedIn$ | async"
-          class="nav-item">
-        <a class="nav-link"
-           routerLink="/dashboard/">
-          Dashboard
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link"
-           routerLink="/about">
-          About
-        </a>
-      </li>
-      <li *ngIf="appLoading$ | async"
-          class="nav-item d-flex flex-column justify-content-center">
-        <div class="spinner-border text-light spinner-border-sm" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-      </li>
-    </ul>
-    <ul *ngIf="loggedIn$ | async ; else login"
-        class="navbar-nav">
-      <li *ngIf="user$ | async; let user"
-          class="mr-2">
-        <span class="navbar-text">
-          {{ user.email }}
-        </span>
-      </li>
-      <li>
-        <a (click)="logout()"
-           class="btn btn-secondary"
-           routerLink="/">
-          Logout
-        </a>
-      </li>
-    </ul>
-    <ng-template #login>
-      <form
-        (ngSubmit)="request_login_email()"
-        class="form-inline my-2 my-lg-0">
-        <input [formControl]="emailControl"
-               aria-label="Email"
-               class="form-control mr-sm-2"
-               name="email"
-               placeholder="Email"
-               type="email">
-        <button [disabled]="!emailControl.valid || (authLoading$ | async)"
-                class="btn btn-secondary my-2 my-sm-0"
-                type="submit">
+    <button class="navbar-toggler"
+            type="button"
+            (click)="navbarOpen = !navbarOpen">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-          <span *ngIf="(authLoading$ | async) === false">
-            Login
+    <div class="collapse navbar-collapse"
+         [class.show]="navbarOpen">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link"
+             routerLink="/">
+            Home
+          </a>
+        </li>
+        <li *ngIf="loggedIn$ | async"
+            class="nav-item">
+          <a class="nav-link"
+             routerLink="/dashboard/">
+            Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+             routerLink="/about">
+            About
+          </a>
+        </li>
+        <li *ngIf="appLoading$ | async"
+            class="nav-item d-none d-md-flex flex-column justify-content-center">
+          <div class="spinner-border text-light spinner-border-sm" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </li>
+      </ul>
+      <ul *ngIf="loggedIn$ | async ; else login"
+          class="navbar-nav">
+        <li *ngIf="user$ | async; let user"
+            class="mr-2">
+          <span class="navbar-text">
+            {{ user.email }}
           </span>
+        </li>
+        <li>
+          <a (click)="logout()"
+             class="btn btn-secondary"
+             routerLink="/">
+            Logout
+          </a>
+        </li>
+      </ul>
 
-          <span *ngIf="authLoading$ | async">
-            <i class="fa fa-gear fa-spin"></i>
-          </span>
-        </button>
-      </form>
-    </ng-template>
+      <ng-template #login>
+        <form
+          (ngSubmit)="request_login_email()"
+          class="form-inline my-2 my-lg-0">
+          <input [formControl]="emailControl"
+                 aria-label="Email"
+                 class="form-control mr-sm-2"
+                 name="email"
+                 placeholder="Email"
+                 type="email">
+          <button [disabled]="!emailControl.valid || (authLoading$ | async)"
+                  class="btn btn-secondary my-2 my-sm-0"
+                  type="submit">
+
+            <span *ngIf="(authLoading$ | async) === false">
+              Login
+            </span>
+
+            <span *ngIf="authLoading$ | async">
+              <i class="fa fa-gear fa-spin"></i>
+            </span>
+          </button>
+        </form>
+      </ng-template>
+    </div>
   </div>
 </nav>
