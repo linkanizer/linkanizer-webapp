@@ -55,3 +55,17 @@ export const moveLinkSuccess = createAction(
 export const moveLinkFailure = createAction(
   '[Links] Move Link Failure',
 );
+
+export const visitLink = createAction(
+  '[Links] Visit Link',
+  props<{ link: ILink }>()
+);
+
+export const visitLinkSuccess = createAction(
+  '[Links] Visit Link Success',
+  props<{ link: ILink }>()
+);
+
+export const visitLinkFailure = createAction(
+  '[Links] Visit Link Failure',
+);
