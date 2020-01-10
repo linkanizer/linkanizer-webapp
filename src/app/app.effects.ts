@@ -192,6 +192,21 @@ export class LinkEffects {
     )
   );
 
+  visitLink$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(LinkActions.visitLink),
+      mergeMap(action =>
+        this.linkService.visit(action.link)
+          .pipe(
+            switchMap(
+              () => [LinkActions.visitLinkSuccess(action), LinkActions.getAllLinks()],
+            ),
+            catchError(error => of(LinkActions.visitLinkFailure(), ErrorActions.appError({ error })))
+          )
+      )
+    )
+  );
+
   deleteLink$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LinkActions.deleteLink),

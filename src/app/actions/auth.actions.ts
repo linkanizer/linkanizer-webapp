@@ -31,3 +31,8 @@ export const authenticateSuccess = createAction(
 export const authenticateFailure = createAction(
   '[Auth] Authenticate Failure'
 );
+
+export const updateAuthToken = createAction(
+  '[Auth] Update Auth Token',
+  props<{ jwt: string }>()
+);

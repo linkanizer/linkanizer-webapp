@@ -3,12 +3,12 @@ import { ILink, IList } from '../../models';
 import { FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, map, switchMap, take } from 'rxjs/operators';
+import { filter, switchMap, take } from 'rxjs/operators';
 import { State } from '../../reducers';
 import { ofType } from '@ngrx/effects';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { ActionsSubject, Store } from '@ngrx/store';
-import { selectLinksAll, selectLinksCreateLoading, selectLinksForList, selectLinksRetrieveLoading, selectListById } from '../../selectors';
+import { selectLinksCreateLoading, selectLinksForList, selectLinksRetrieveLoading, selectListById } from '../../selectors';
 
 import * as LinkActions from '../../actions/link.actions';
 import * as ListActions from '../../actions/list.actions';
@@ -61,8 +61,6 @@ export class ListDetailComponent implements OnInit {
         ),
       );
 
-    this.links$.subscribe(n => console.log('Links', n));
-
     this.dispatcher
       .pipe(
         ofType(LinkActions.createLinkSuccess)
@@ -99,9 +97,17 @@ export class ListDetailComponent implements OnInit {
         links => {
           for (const link of links) {
             window.open(link.url, '_blank');
+
+            this.store.dispatch(LinkActions.visitLink({ link }));
           }
         }
       );
+  }
+
+  onLinkVisit(link: ILink): boolean {
+    this.store.dispatch(LinkActions.visitLink({ link }));
+
+    return true;
   }
 
   handleLinkDropped(event: CdkDragDrop<any>): void {

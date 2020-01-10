@@ -4,6 +4,7 @@ export interface ILink {
   url: string;
   imageUrl: string;
   description: string;
+  visits: number;
 
   order: number;
 

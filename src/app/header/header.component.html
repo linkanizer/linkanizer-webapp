@@ -4,18 +4,21 @@
        class="navbar-brand"
        routerLink="/dashboard/">
       Linkanizer
+
       <div *ngIf="appLoading$ | async"
-           class="spinner-border text-light spinner-border-sm" role="status">
+           class="spinner-border text-light spinner-border-sm d-md-none"
+           role="status">
         <span class="sr-only">Loading...</span>
       </div>
     </a>
-    
+
     <a *ngIf="loggedIn$ | async"
        class="navbar-brand"
        routerLink="/dashboard/">
       Linkanizer
       <div *ngIf="appLoading$ | async"
-           class="spinner-border text-light spinner-border-sm" role="status">
+           class="spinner-border text-light spinner-border-sm d-md-none"
+           role="status">
         <span class="sr-only">Loading...</span>
       </div>
     </a>

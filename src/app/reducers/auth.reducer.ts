@@ -1,6 +1,7 @@
 import { Action, createReducer, on } from '@ngrx/store';
 
 import * as AuthActions from '../actions/auth.actions';
+
 import { IAuthentication, IUser } from '../models';
 
 export interface AuthState {
@@ -30,6 +31,10 @@ const authReducer = createReducer(
   on(AuthActions.authenticateFailure, state => ({
     ...state,
     loading: false
+  })),
+  on(AuthActions.updateAuthToken, (state, { jwt }) => ({
+    ...state,
+    authentication: { jwt }
   })),
   on(AuthActions.logout, state => ({
     user: null,
