@@ -27,6 +27,7 @@
     "bootstrap": "^4.4.1",
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
+    "jwt-decode": "^2.2.0",
     "ngrx-store-persist": "^1.0.20",
     "ngx-toastr": "^11.2.1",
     "rxjs": "~6.4.0",
