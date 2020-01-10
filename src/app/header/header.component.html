@@ -5,6 +5,8 @@
        routerLink="/dashboard/">
       Linkanizer
 
+      <span class="badge badge-secondary">{{ version }}</span>
+
       <div *ngIf="appLoading$ | async"
            class="spinner-border text-light spinner-border-sm d-md-none"
            role="status">
@@ -16,6 +18,9 @@
        class="navbar-brand"
        routerLink="/dashboard/">
       Linkanizer
+
+      <span class="badge badge-secondary">{{ version }}</span>
+
       <div *ngIf="appLoading$ | async"
            class="spinner-border text-light spinner-border-sm d-md-none"
            role="status">

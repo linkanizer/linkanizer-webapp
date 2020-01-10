@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { selectAppLoading, selectAuthLoading, selectAuthUser, selectAuthUserIsLoggedIn } from '../selectors';
 import * as AuthActions from '../actions/auth.actions';
 import { IUser } from '../models';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -22,6 +23,8 @@ export class HeaderComponent implements OnInit {
   public emailControl: FormControl = new FormControl('', [Validators.email, Validators.required]);
 
   public navbarOpen = false;
+
+  public version = environment.version;
 
   constructor(private store: Store<State>) {
   }
