@@ -10,10 +10,11 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { selectLinksCreateLoading, selectLinksForList, selectLinksRetrieveLoading, selectListById } from '../../selectors';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TransferLinkModalComponent } from '../transfer-link-modal/transfer-link-modal.component';
+import { ConfirmDeleteModalComponent } from '../confirm-delete-modal/confirm-delete-modal.component';
 
 import * as LinkActions from '../../actions/link.actions';
 import * as ListActions from '../../actions/list.actions';
-import { TransferLinkModalComponent } from '../transfer-link-modal/transfer-link-modal.component';
 
 
 @Component({
@@ -84,11 +85,37 @@ export class ListDetailComponent implements OnInit {
   }
 
   deleteLink(link: ILink): void {
-    this.store.dispatch(LinkActions.deleteLink({ link }));
+    const modalRef = this.modalService.open(ConfirmDeleteModalComponent);
+
+    modalRef.componentInstance.name = link.title;
+
+    modalRef.result
+      .then(
+        (reason: string) => {
+          switch (reason) {
+            case 'delete':
+              this.store.dispatch(LinkActions.deleteLink({ link }));
+              break;
+          }
+        }
+      );
   }
 
   deleteList(): void {
-    this.store.dispatch(ListActions.deleteList({ list: this.list }));
+    const modalRef = this.modalService.open(ConfirmDeleteModalComponent);
+
+    modalRef.componentInstance.name = this.list.name;
+
+    modalRef.result
+      .then(
+        (reason: string) => {
+          switch (reason) {
+            case 'delete':
+              this.store.dispatch(ListActions.deleteList({ list: this.list }));
+              break;
+          }
+        }
+      );
   }
 
   openAll(): void {
