@@ -94,6 +94,10 @@
                           ngbDropdownToggle></button>
                   <div [attr.aria-labelledby]="'dropdownListOptions-' + link.id"
                        ngbDropdownMenu>
+                    <button (click)="transferLink(link)"
+                            ngbDropdownItem>
+                      Transfer
+                    </button>
                     <button (click)="deleteLink(link)"
                             ngbDropdownItem>
                       Delete
@@ -102,7 +106,6 @@
                 </div>
               </div>
             </div>
-
 
           </div>
         </li>
@@ -156,6 +159,10 @@
                           ngbDropdownToggle></button>
                   <div [attr.aria-labelledby]="'dropdownListOptions-' + link.id"
                        ngbDropdownMenu>
+                    <button (click)="transferLink(link)"
+                            ngbDropdownItem>
+                      Transfer
+                    </button>
                     <button (click)="deleteLink(link)"
                             ngbDropdownItem>
                       Delete

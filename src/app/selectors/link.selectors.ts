@@ -36,8 +36,13 @@ export const selectLinksMoveLoading = createSelector(
   (state: LinkState) => state.loading.move
 );
 
+export const selectLinksTransferLoading = createSelector(
+  selectLinks,
+  (state: LinkState) => state.loading.transfer
+);
+
 export const selectLinksLoading = createSelector(
-  [selectLinksRetrieveLoading, selectLinksCreateLoading, selectLinksDeleteLoading, selectLinksMoveLoading],
+  [selectLinksRetrieveLoading, selectLinksCreateLoading, selectLinksDeleteLoading, selectLinksMoveLoading, selectLinksTransferLoading],
   (...args) => args.some(t => t)
 );
 

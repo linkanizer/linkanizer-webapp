@@ -9,9 +9,11 @@ import { ofType } from '@ngrx/effects';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { selectLinksCreateLoading, selectLinksForList, selectLinksRetrieveLoading, selectListById } from '../../selectors';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import * as LinkActions from '../../actions/link.actions';
 import * as ListActions from '../../actions/list.actions';
+import { TransferLinkModalComponent } from '../transfer-link-modal/transfer-link-modal.component';
 
 
 @Component({
@@ -32,7 +34,8 @@ export class ListDetailComponent implements OnInit {
   constructor(private store: Store<State>,
               private dispatcher: ActionsSubject,
               private router: Router,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -125,6 +128,11 @@ export class ListDetailComponent implements OnInit {
           this.store.dispatch(LinkActions.moveLink({ link, new_order: order }));
         }
       );
+  }
+
+  transferLink(link: ILink): void {
+    const modalRef = this.modalService.open(TransferLinkModalComponent);
+    modalRef.componentInstance.link = link;
   }
 
 }

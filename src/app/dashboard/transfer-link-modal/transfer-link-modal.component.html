@@ -1,0 +1,41 @@
+<div class="modal-header">
+  <h4 class="modal-title">Transfer Link</h4>
+  <button type="button"
+          class="close"
+          aria-label="Close"
+          (click)="activeModal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <p>
+    Transferring <strong>{{ link.title }}</strong>
+  </p>
+
+  <form>
+    <select [formControl]="listSelect"
+            class="custom-select">
+      <option *ngFor="let list of lists$ | async"
+              [ngValue]="list">{{ list.name }}</option>
+    </select>
+  </form>
+
+</div>
+<div class="modal-footer">
+  <button *ngIf="(loading$ | async) === false"
+          type="button"
+          class="btn btn-outline-dark"
+          [disabled]="listSelect.invalid"
+          (click)="submit()">
+    Submit
+  </button>
+  <button *ngIf="loading$ | async"
+          class="btn btn-primary"
+          type="button"
+          disabled>
+    <span class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"></span>
+    <span class="sr-only">Loading...</span>
+  </button>
+</div>
