@@ -11,11 +11,12 @@ import { SettingsPageComponent } from './settings-page/settings-page.component';
 import { ListDetailComponent } from './list-detail/list-detail.component';
 import { NoListSelectedComponent } from './no-list-selected/no-list-selected.component';
 import { TransferLinkModalComponent } from './transfer-link-modal/transfer-link-modal.component';
+import { ConfirmDeleteModalComponent } from './confirm-delete-modal/confirm-delete-modal.component';
 
 
 @NgModule({
-  declarations: [MainPageComponent, SettingsPageComponent, ListDetailComponent, NoListSelectedComponent, TransferLinkModalComponent],
-  entryComponents: [TransferLinkModalComponent],
+  declarations: [MainPageComponent, SettingsPageComponent, ListDetailComponent, NoListSelectedComponent, TransferLinkModalComponent, ConfirmDeleteModalComponent],
+  entryComponents: [TransferLinkModalComponent, ConfirmDeleteModalComponent],
   imports: [
     CommonModule,
     DashboardRoutingModule,
