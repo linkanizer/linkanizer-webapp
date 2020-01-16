@@ -35,6 +35,14 @@ export class LinkService {
     return this.http.post(`${environment.api}/links/${link.id}/visit/`, '');
   }
 
+  public transfer(link: ILink, list: IList): Observable<any> {
+    const payload = {
+      list: list.id
+    };
+
+    return this.http.post(`${environment.api}/links/${link.id}/transfer/`, payload);
+  }
+
   public getAll(): Observable<ILink[]> {
     return this.http.get<ILink[]>(`${environment.api}/links/`);
   }

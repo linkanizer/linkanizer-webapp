@@ -11,6 +11,7 @@ export interface LinkState {
     create: boolean;
     delete: boolean;
     move: boolean;
+    transfer: boolean;
   };
 }
 
@@ -18,7 +19,8 @@ const emptyLoadingState = {
   retrieve: false,
   create: false,
   delete: false,
-  move: false
+  move: false,
+  transfer: false
 };
 
 const initialState: LinkState = {
@@ -76,6 +78,21 @@ const listReducer = createReducer(
     loading: emptyLoadingState
   })),
   on(LinkActions.moveLinkFailure, (state) => ({
+    ...state,
+    loading: emptyLoadingState,
+  })),
+  on(LinkActions.transferLink, state => ({
+    ...state,
+    loading: {
+      ...emptyLoadingState,
+      transfer: true
+    }
+  })),
+  on(LinkActions.transferLinkSuccess, (state) => ({
+    ...state,
+    loading: emptyLoadingState
+  })),
+  on(LinkActions.transferLinkFailure, (state) => ({
     ...state,
     loading: emptyLoadingState,
   })),

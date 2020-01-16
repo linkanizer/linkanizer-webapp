@@ -207,6 +207,21 @@ export class LinkEffects {
     )
   );
 
+  transferLink$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(LinkActions.transferLink),
+      mergeMap(action =>
+        this.linkService.transfer(action.link, action.list)
+          .pipe(
+            switchMap(
+              () => [LinkActions.transferLinkSuccess(action), LinkActions.getAllLinks()],
+            ),
+            catchError(error => of(LinkActions.transferLinkFailure(), ErrorActions.appError({ error })))
+          )
+      )
+    )
+  );
+
   deleteLink$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LinkActions.deleteLink),

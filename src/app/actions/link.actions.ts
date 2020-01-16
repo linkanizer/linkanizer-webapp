@@ -69,3 +69,17 @@ export const visitLinkSuccess = createAction(
 export const visitLinkFailure = createAction(
   '[Links] Visit Link Failure',
 );
+
+export const transferLink = createAction(
+  '[Links] Transfer Link',
+  props<{ link: ILink, list: IList }>()
+);
+
+export const transferLinkSuccess = createAction(
+  '[Links] Transfer Link Success',
+  props<{ link: ILink }>()
+);
+
+export const transferLinkFailure = createAction(
+  '[Links] Transfer Link Failure',
+);

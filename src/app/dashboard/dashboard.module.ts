@@ -10,10 +10,12 @@ import { MainPageComponent } from './main-page/main-page.component';
 import { SettingsPageComponent } from './settings-page/settings-page.component';
 import { ListDetailComponent } from './list-detail/list-detail.component';
 import { NoListSelectedComponent } from './no-list-selected/no-list-selected.component';
+import { TransferLinkModalComponent } from './transfer-link-modal/transfer-link-modal.component';
 
 
 @NgModule({
-  declarations: [MainPageComponent, SettingsPageComponent, ListDetailComponent, NoListSelectedComponent],
+  declarations: [MainPageComponent, SettingsPageComponent, ListDetailComponent, NoListSelectedComponent, TransferLinkModalComponent],
+  entryComponents: [TransferLinkModalComponent],
   imports: [
     CommonModule,
     DashboardRoutingModule,
